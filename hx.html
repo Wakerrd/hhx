@@ -5204,32 +5204,6 @@ transform: translateY(0);
             });
         });
 
-        // 6. 修改出生日期设置的事件监听
-        document.getElementById('birthDateForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const birthDateStr = document.getElementById('birthDate').value;
-            
-            if (!/^\d{8}$/.test(birthDateStr)) {
-                alert('请输入正确的日期格式（例如：19970704）');
-                return;
-            }
-            
-            try {
-                const birthDate = parseDateString(birthDateStr);
-                if (birthDate > new Date()) {
-                    alert('出生日期不能晚于当前日期');
-                    return;
-                }
-                
-                appData.birthDate = birthDateStr;
-                localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
-                
-                updateBirthDateDisplay();
-                renderViewMode();
-            } catch (error) {
-                alert('日期格式无效，请重试');
-            }
-        });
 
         // 新增保存出生日期的函数
         function saveBirthDate() {
@@ -5251,37 +5225,12 @@ transform: translateY(0);
                 appData.birthDate = birthDateStr;
                 localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
                 updateBirthDateDisplay();
-                renderViewMode();
+                //renderViewMode();
             } catch (error) {
                 alert('日期格式无效，请重试');
             }
         }
 
-        // 修改出生日期表单的事件监听
-        document.getElementById('birthDateForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const birthDateStr = document.getElementById('birthDate').value;
-            
-            if (!/^\d{8}$/.test(birthDateStr)) {
-                alert('请输入正确的日期格式（例如：20000101）');
-                return;
-            }
-            
-            try {
-                const birthDate = parseDateString(birthDateStr);
-                if (birthDate > new Date()) {
-                    alert('出生日期不能晚于当前日期');
-                    return;
-                }
-                
-                appData.birthDate = birthDateStr;
-                localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
-                updateBirthDateDisplay();
-                renderViewMode();
-            } catch (error) {
-                alert('日期格式无效，请重试');
-            }
-        });
 
         // 添加更新时间的函数
         function updateDateTime() {
@@ -5671,7 +5620,10 @@ transform: translateY(0);
                               document.getElementById('ageMode').checked ? 'age' : 'savings';
 
             localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
-            renderViewMode(currentView); // 使用当前视图更新UI
+            //renderViewMode(currentView); // 使用当前视图更新UI
+            if (currentView !== 'age') {
+                renderViewMode(currentView);
+            }
         }
 
         // 修改添加时间的函数

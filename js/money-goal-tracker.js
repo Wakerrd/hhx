@@ -245,21 +245,25 @@ class GoalTracker {
         return true;
     }
 
-    // 导出所有数据
+    // 导出所有数据 - 简化为内部使用
     exportData() {
         return {
             goals: this.goals,
-            exportedAt: new Date().toISOString()
+            currentGoalId: this.currentGoalId,
+            currentSubgoalId: this.currentSubgoalId
         };
     }
 
-    // 导入数据
+    // 导入数据 - 简化为内部使用
     importData(data) {
-        if (data.goals) {
+        if (data && data.goals) {
             this.goals = data.goals;
-            localStorage.setItem('moneyGoals', JSON.stringify(this.goals));
+            if (data.currentGoalId) this.currentGoalId = data.currentGoalId;
+            if (data.currentSubgoalId) this.currentSubgoalId = data.currentSubgoalId;
+            this.saveToLocalStorage();
+            return true;
         }
-        return true;
+        return false;
     }
 }
 
@@ -318,11 +322,6 @@ class UIController {
         this.saveMoneyBtn = document.getElementById('save-money-btn');
         this.cancelMoneyBtn = document.getElementById('cancel-money-btn');
         this.closeMoneyModalBtn = document.getElementById('close-money-modal');
-        
-        // 导入导出元素
-        this.exportBtn = document.getElementById('export-btn');
-        this.importBtn = document.getElementById('import-btn');
-        this.importInput = document.getElementById('import-file');
     }
 
     // 初始化事件监听器
@@ -375,26 +374,6 @@ class UIController {
             e.preventDefault();
             e.stopPropagation();
             this.handleMoneySave();
-        });
-        
-        // 导入导出功能
-        this.exportBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.handleExport();
-        });
-        
-        this.importInput.addEventListener('change', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.handleImport();
-        });
-        
-        // 请求导入按钮点击事件
-        this.importBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            this.importInput.click(); // 触发文件选择
         });
         
         // 点击模态窗口外部关闭
@@ -923,95 +902,6 @@ class UIController {
         this.hideMoneyModal();
         this.renderGoals();
         this.updateDashboard();
-    }
-
-    // 处理导出
-    handleExport() {
-        try {
-            // 准备导出数据
-            const dataToExport = {
-                goals: this.goalTracker.goals,
-                version: '1.0'
-            };
-            
-            // 转换为JSON字符串
-            const dataStr = JSON.stringify(dataToExport, null, 2);
-            
-            // 创建Blob对象
-            const blob = new Blob([dataStr], { type: 'application/json' });
-            
-            // 创建下载链接
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `money-goals-${new Date().toISOString().slice(0, 10)}.json`;
-            
-            // 触发下载
-            document.body.appendChild(a);
-            a.click();
-            
-            // 清理
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            alert('导出成功！');
-        } catch (error) {
-            console.error('导出失败:', error);
-            alert('导出失败: ' + error.message);
-        }
-    }
-    
-    handleImport() {
-        try {
-            const file = this.importInput.files[0];
-            if (!file) {
-                alert('请选择一个文件');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                try {
-                    // 尝试解析JSON
-                    const data = JSON.parse(e.target.result);
-                    
-                    // 验证数据结构
-                    if (!data || !Array.isArray(data.goals)) {
-                        alert('无效的数据格式：缺少goals数组');
-                        return;
-                    }
-                    
-                    // 导入数据
-                    this.goalTracker.goals = data.goals;
-                    
-                    // 更新本地存储
-                    this.goalTracker.saveToLocalStorage();
-                    
-                    // 更新UI
-                    this.renderGoals();
-                    this.updateDashboard();
-                    
-                    alert('导入成功！');
-                } catch (parseError) {
-                    console.error('JSON解析失败:', parseError);
-                    alert('文件格式错误：请确保是有效的JSON文件');
-                }
-            };
-            
-            reader.onerror = () => {
-                alert('读取文件失败');
-            };
-            
-            reader.readAsText(file);
-            
-            // 重置文件输入以允许重新选择相同的文件
-            this.importInput.value = '';
-        } catch (error) {
-            console.error('导入失败:', error);
-            alert('导入失败: ' + error.message);
-        }
     }
 }
 

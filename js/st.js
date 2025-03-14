@@ -363,12 +363,28 @@
 
         // 导出数据函数
         function exportData() {
-            const dataStr = JSON.stringify(appData, null, 2);
+            // 获取赚钱目标追踪系统的数据
+            const moneyGoals = JSON.parse(localStorage.getItem('moneyGoals')) || [];
+            const currentGoalId = parseInt(localStorage.getItem('currentGoalId')) || 1;
+            const currentSubgoalId = parseInt(localStorage.getItem('currentSubgoalId')) || 1;
+
+            // 合并两个系统的数据
+            const combinedData = {
+                stData: appData,
+                moneyTrackerData: {
+                    goals: moneyGoals,
+                    currentGoalId: currentGoalId,
+                    currentSubgoalId: currentSubgoalId
+                },
+                exportedAt: new Date().toISOString()
+            };
+
+            const dataStr = JSON.stringify(combinedData, null, 2);
             const blob = new Blob([dataStr], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `savings-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `combined-data-${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -383,27 +399,62 @@
                 reader.onload = function(e) {
                     try {
                         const imported = JSON.parse(e.target.result);
-                        if (confirm('确定要导入数据吗？当前数据将被替换。')) {
-                            appData = {
-                                totalSaved: Number((Math.round(parseFloat(imported.totalSaved || 0) * 100) / 100).toFixed(2)),
-                                goals: Array.isArray(imported.goals) ? imported.goals.map(goal => ({
-                                    name: goal.name,
-                                    target: Number((Math.round(parseFloat(goal.target) * 100) / 100).toFixed(2))
-                                })) : [],
-                                ageGoals: Array.isArray(imported.ageGoals) ? imported.ageGoals : [],
-                                birthDate: imported.birthDate,
-                                history: imported.history || [],
-                                archivedGoals: Array.isArray(imported.archivedGoals) ? imported.archivedGoals : [],
-                                archivedAgeGoals: Array.isArray(imported.archivedAgeGoals) ? imported.archivedAgeGoals : [],
-                                todos: imported.todos || { q1: [], q2: [], q3: [], q4: [] },
-                                inspirations: Array.isArray(imported.inspirations) ? imported.inspirations : [],
-                                inspirationTags: imported.inspirationTags || ['工作', '学习', '生活', '其他'],
-                                timeEvents: Array.isArray(imported.timeEvents) ? imported.timeEvents : [],
-                                habits: Array.isArray(imported.habits) ? imported.habits : [],
-                                personalData: imported.personalData || { categories: [] }
-                            };
-                            renderViewMode();
-                            alert('数据导入成功！');
+                        
+                        // 检查是否是合并数据格式
+                        if (imported.stData && imported.moneyTrackerData) {
+                            if (confirm('确定要导入所有数据吗？当前数据将被替换。')) {
+                                // 导入ST计划系统数据
+                                appData = {
+                                    totalSaved: Number((Math.round(parseFloat(imported.stData.totalSaved || 0) * 100) / 100).toFixed(2)),
+                                    goals: Array.isArray(imported.stData.goals) ? imported.stData.goals.map(goal => ({
+                                        name: goal.name,
+                                        target: Number((Math.round(parseFloat(goal.target) * 100) / 100).toFixed(2))
+                                    })) : [],
+                                    ageGoals: Array.isArray(imported.stData.ageGoals) ? imported.stData.ageGoals : [],
+                                    birthDate: imported.stData.birthDate,
+                                    history: imported.stData.history || [],
+                                    archivedGoals: Array.isArray(imported.stData.archivedGoals) ? imported.stData.archivedGoals : [],
+                                    archivedAgeGoals: Array.isArray(imported.stData.archivedAgeGoals) ? imported.stData.archivedAgeGoals : [],
+                                    todos: imported.stData.todos || { q1: [], q2: [], q3: [], q4: [] },
+                                    inspirations: Array.isArray(imported.stData.inspirations) ? imported.stData.inspirations : [],
+                                    inspirationTags: imported.stData.inspirationTags || ['工作', '学习', '生活', '其他'],
+                                    timeEvents: Array.isArray(imported.stData.timeEvents) ? imported.stData.timeEvents : [],
+                                    habits: Array.isArray(imported.stData.habits) ? imported.stData.habits : [],
+                                    personalData: imported.stData.personalData || { categories: [] }
+                                };
+
+                                // 导入赚钱目标追踪系统数据
+                                localStorage.setItem('moneyGoals', JSON.stringify(imported.moneyTrackerData.goals));
+                                localStorage.setItem('currentGoalId', imported.moneyTrackerData.currentGoalId);
+                                localStorage.setItem('currentSubgoalId', imported.moneyTrackerData.currentSubgoalId);
+
+                                renderViewMode();
+                                alert('所有数据导入成功！');
+                            }
+                        } else {
+                            // 处理旧格式数据（仅ST计划系统数据）
+                            if (confirm('确定要导入ST计划系统数据吗？当前数据将被替换。')) {
+                                appData = {
+                                    totalSaved: Number((Math.round(parseFloat(imported.totalSaved || 0) * 100) / 100).toFixed(2)),
+                                    goals: Array.isArray(imported.goals) ? imported.goals.map(goal => ({
+                                        name: goal.name,
+                                        target: Number((Math.round(parseFloat(goal.target) * 100) / 100).toFixed(2))
+                                    })) : [],
+                                    ageGoals: Array.isArray(imported.ageGoals) ? imported.ageGoals : [],
+                                    birthDate: imported.birthDate,
+                                    history: imported.history || [],
+                                    archivedGoals: Array.isArray(imported.archivedGoals) ? imported.archivedGoals : [],
+                                    archivedAgeGoals: Array.isArray(imported.archivedAgeGoals) ? imported.archivedAgeGoals : [],
+                                    todos: imported.todos || { q1: [], q2: [], q3: [], q4: [] },
+                                    inspirations: Array.isArray(imported.inspirations) ? imported.inspirations : [],
+                                    inspirationTags: imported.inspirationTags || ['工作', '学习', '生活', '其他'],
+                                    timeEvents: Array.isArray(imported.timeEvents) ? imported.timeEvents : [],
+                                    habits: Array.isArray(imported.habits) ? imported.habits : [],
+                                    personalData: imported.personalData || { categories: [] }
+                                };
+                                renderViewMode();
+                                alert('ST计划系统数据导入成功！');
+                            }
                         }
                     } catch (error) {
                         alert('导入失败：无效的数据格式');
@@ -652,7 +703,7 @@
             });
 
             localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
-            renderViewMode();
+                                renderViewMode();
 
             const modal = bootstrap.Modal.getInstance(document.getElementById('ageSettingsModal'));
             modal.hide();
@@ -714,7 +765,7 @@
 
             if (!document.getElementById('ageSettingsModal')) {
                 document.body.insertAdjacentHTML('beforeend', modalHtml);
-            } else {
+                        } else {
                 document.getElementById('ageSettingsModal').outerHTML = modalHtml;
             }
 
@@ -1888,23 +1939,15 @@
                             <i class="fas fa-search"></i>
                             <input type="text" placeholder="搜索灵感..." onkeyup="searchInspirations(this.value)">
                         </div>
-                        <div class="view-switch">
-                            <button class="${viewMode === 'grid' ? 'active' : ''}" onclick="switchView('grid')" title="网格视图">
-                                <i class="fas fa-th-large"></i> 网格
-                            </button>
-                            <button class="${viewMode === 'timeline' ? 'active' : ''}" onclick="switchView('timeline')" title="时间线视图">
-                                <i class="fas fa-stream"></i> 时间线
-                            </button>
-                        </div>
                         <div class="inspiration-actions-group">
                             <button class="btn btn-danger btn-sm" id="batchDeleteBtn" style="display:none" onclick="batchDeleteInspirations()" title="删除选中的灵感">
-                                <i class="fas fa-trash"></i> 删除选中
+                                <i class="fas fa-trash"></i> 删除
                             </button>
                             <button class="btn btn-success btn-sm" id="batchMergeBtn" style="display:none" onclick="showMergeModal()" title="合并选中的灵感">
-                                <i class="fas fa-object-group"></i> 合并选中
+                                <i class="fas fa-object-group"></i> 合并
                             </button>
                             <button class="btn btn-primary btn-sm" onclick="showBulkInputModal()" title="批量导入灵感">
-                                <i class="fas fa-file-import"></i> 批量导入
+                                <i class="fas fa-file-import"></i> 导入
                             </button>
                             <button class="btn btn-primary btn-sm" onclick="showAddInspirationModal()" title="添加新灵感">
                                 <i class="fas fa-plus"></i> 添加
@@ -1936,24 +1979,6 @@
             }
         }
 
-        // 添加视图切换函数
-        function switchView(mode) {
-            localStorage.setItem('inspiration_view_mode', mode);
-            const container = document.getElementById('inspirationContainer');
-            container.className = mode === 'grid' ? 'inspiration-grid' : 'timeline-view';
-            container.innerHTML = mode === 'grid' ? displayGridView() : displayTimelineView();
-            
-            // 重新初始化拖拽功能（仅在网格视图时）
-            if (mode === 'grid') {
-                initDragAndDrop();
-            }
-
-            // 更新按钮状态
-            document.querySelectorAll('.view-switch button').forEach(btn => {
-                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(mode));
-            });
-        }
-
         // 添加网格视图显示函数
         function displayGridView() {
             return appData.inspirations
@@ -1964,21 +1989,16 @@
                             <div class="inspiration-checkbox">
                                 <input type="checkbox" class="inspiration-select" onchange="toggleInspiration(this)">
                             </div>
-                            <div class="inspiration-number">${inspiration.number}</div>
+                            <span class="inspiration-number">${inspiration.number}</span>
                             <div class="inspiration-content">
                                 <div class="inspiration-text">${inspiration.content}</div>
                             </div>
                         </div>
                         <div class="inspiration-footer">
-                            <div class="inspiration-info">
-                                <div class="inspiration-tags">
-                                    ${(inspiration.tags || []).map(tag => `
-                                        <span class="inspiration-tag">${tag}</span>
-                                    `).join('')}
-                                </div>
-                                <div class="inspiration-time">
-                                    最后更新: ${formatDate(inspiration.updateTime)}
-                                </div>
+                            <div class="inspiration-tags">
+                                ${(inspiration.tags || []).map(tag => `
+                                    <span class="inspiration-tag">${tag}</span>
+                                `).join('')}
                             </div>
                             <div class="inspiration-actions">
                                 <button class="btn-edit" onclick="editInspiration('${inspiration.id}')">
@@ -2935,21 +2955,21 @@
             const container = document.querySelector('.goal-container');
             container.innerHTML = `
                 <!-- 添加习惯表单 -->
-                <div class="card mb-3">
-                    <div class="card-body p-3">
+                <div class="card mb-2">
+                    <div class="card-body p-2">
                         <form id="habitForm" onsubmit="addHabit(event)" class="row g-2 align-items-end">
                             <div class="col">
-                                <label class="form-label">习惯名称</label>
-                                <input type="text" class="form-control" id="habitName" required 
+                                <label class="form-label mb-1">习惯名称</label>
+                                <input type="text" class="form-control form-control-sm" id="habitName" required 
                                        placeholder="输入习惯名称">
                             </div>
                             <div class="col-auto">
-                                <label class="form-label">目标次数</label>
-                                <input type="number" class="form-control" id="habitTarget" 
-                                       min="1" required style="width: 100px;" placeholder="输入次数">
+                                <label class="form-label mb-1">目标次数</label>
+                                <input type="number" class="form-control form-control-sm" id="habitTarget" 
+                                       min="1" required style="width: 80px;" placeholder="输入次数">
                             </div>
                             <div class="col-auto">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary btn-sm">
                                     <i class="fas fa-plus"></i> 添加习惯
                                 </button>
                             </div>
@@ -2958,7 +2978,7 @@
                 </div>
 
                 <!-- 习惯列表 -->
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
             `;
             
             if (!appData.habits) {
@@ -2966,7 +2986,7 @@
             }
             
             if (appData.habits.length === 0) {
-                container.innerHTML += '<div class="col-12"><div class="alert alert-info">还没有添加任何习惯</div></div>';
+                container.innerHTML += '<div class="col-12"><div class="alert alert-info py-2">还没有添加任何习惯</div></div>';
             } else {
                 appData.habits.forEach((habit, index) => {
                     const progress = (habit.count || 0) / habit.target * 100;
@@ -2977,20 +2997,20 @@
                     container.innerHTML += `
                         <div class="col">
                             <div class="card h-100" data-habit-index="${index}">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 class="card-title mb-0">${habit.name}</h5>
-                                        <button class="btn btn-outline-danger btn-sm" onclick="deleteHabit(${index})">
+                                <div class="card-body p-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <h6 class="card-title mb-0">${habit.name}</h6>
+                                        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteHabit(${index})">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
-                                    <div class="progress mb-2" style="height: 8px;">
+                                    <div class="progress mb-1" style="height: 6px;">
                                         <div class="progress-bar ${progressClass}" role="progressbar" 
                                              style="width: ${progress}%"></div>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="text-muted small">进度: ${habit.count || 0}/${habit.target}</div>
-                                        <button class="btn btn-outline-success btn-sm" 
+                                        <button class="btn btn-outline-success btn-sm py-0 px-2" 
                                                 onclick="incrementHabit(${index})"
                                                 ${progress >= 100 ? 'disabled' : ''}>
                                             <i class="fas fa-plus"></i> 打卡
@@ -3174,7 +3194,7 @@
             eventCard.innerHTML = `
                 <div class="event-header">
                     <span class="event-name">${event.name}</span>
-                    <div>
+                    <div class="d-flex align-items-center">
                         <input type="text" class="time-input" placeholder="例：1h30m">
                         <button class="btn btn-success btn-sm" onclick="addTime(this.parentElement.parentElement.parentElement)">
                             <i class="fas fa-plus"></i> 添加
@@ -3209,14 +3229,16 @@
             container.style.display = 'block';
             container.className = '';
             
-            // 使用统一的布局结构
+            // 使用更紧凑的布局结构
             container.innerHTML = `
                 <div class="time-tracking-container">
-                    <h3 class="mb-3">时间统计</h3>
-                    <button class="btn btn-primary add-event-btn" onclick="addNewEvent()">
-                        <i class="fas fa-plus"></i> 添加新事件
-                    </button>
-                    <div id="events-container" class="mt-3">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="mb-0">时间统计</h3>
+                        <button class="btn btn-primary add-event-btn" onclick="addNewEvent()">
+                            <i class="fas fa-plus"></i> 添加新事件
+                        </button>
+                    </div>
+                    <div id="events-container">
                         <!-- 事件卡片将在这里动态添加 -->
                     </div>
                 </div>

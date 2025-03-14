@@ -331,6 +331,42 @@
             const timeTrackingMode = document.getElementById('timeTrackingMode');
             const personalDataMode = document.getElementById('personalDataMode');
             
+            // 添加移动设备触摸事件支持
+            if ('ontouchstart' in window) {
+                // 特定按钮的处理
+                const moneyGoalBtn = document.getElementById('money-goal-btn');
+                if (moneyGoalBtn) {
+                    moneyGoalBtn.addEventListener('touchstart', function(e) {
+                        e.preventDefault();
+                        window.location.href = 'money-goal-tracker.html';
+                    });
+                }
+                
+                // 全局触摸事件处理
+                document.addEventListener('touchstart', function(e) {
+                    // 处理所有按钮类元素
+                    if (e.target.tagName === 'BUTTON' || 
+                        e.target.closest('button') || 
+                        e.target.classList.contains('btn') || 
+                        e.target.closest('.btn')) {
+                        // 不阻止所有触摸事件，仅增强按钮响应
+                        // 获取原始onclick属性
+                        const clickHandler = e.target.getAttribute('onclick') || 
+                                           (e.target.closest('button') && e.target.closest('button').getAttribute('onclick')) ||
+                                           (e.target.closest('.btn') && e.target.closest('.btn').getAttribute('onclick'));
+                        
+                        // 如果有onclick属性且包含location.href，则手动处理
+                        if (clickHandler && clickHandler.includes('location.href')) {
+                            const url = clickHandler.match(/['"]([^'"]*)['"]/)[1];
+                            if (url) {
+                                e.preventDefault();
+                                window.location.href = url;
+                            }
+                        }
+                    }
+                }, {passive: false});
+            }
+            
             if (savingsMode && ageMode && historyMode && archiveMode && todoMode && inspirationMode && habitMode && timeTrackingMode && personalDataMode) {
                 savingsMode.addEventListener('change', () => {
                     if (savingsMode.checked) renderViewMode('savings');

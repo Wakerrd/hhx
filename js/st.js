@@ -2916,9 +2916,7 @@
 
         // 将批量导入函数添加到全局作用域
         window.saveBulkInspirations = saveBulkInspirations;
-        window.showBulkInputModal = showBulkInputModal;
-
-        // 添加习惯打卡视图的显示逻辑
+        window.showBulkInputModal = showBulkInputModal;        // 添加习惯打卡视图的显示逻辑
         function showHabitView() {
             const container = document.querySelector('.goal-container');
             container.innerHTML = `
@@ -3503,3 +3501,4 @@
                 renderViewMode('personalData');
             }
         };
+

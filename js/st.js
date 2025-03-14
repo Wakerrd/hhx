@@ -155,11 +155,19 @@
                 return;
             }
 
-            // 显示目标容器
-            container.style.display = 'grid';
-            container.className = 'goal-container';
+            // 设置合适的容器样式
+            if (document.getElementById('personalDataMode').checked) {
+                container.style.display = 'block';
+                container.className = 'goal-container w-100';
+            } else {
+                // 显示目标容器
+                container.style.display = 'grid';
+                container.className = 'goal-container';
+            }
+            
+            // 清空容器内容，准备显示新内容
             container.innerHTML = '';
-
+            
             // 根据视图类型显示内容
             if (document.getElementById('inspirationMode').checked) {
                 container.className = 'inspiration-wrapper';
@@ -307,6 +315,7 @@
             // 更新UI
             renderViewMode(lastViewMode);
             updateDateTime();
+            updateBirthDateDisplay(); // 确保加载时显示出生日期和年龄
             setInterval(updateDateTime, 1000);
         }
 
@@ -819,6 +828,9 @@
                 
                 // 清空输入框
                 document.getElementById('birthDate').value = '';
+                
+                // 更新年龄显示
+                updateBirthDateDisplay();
                 
                 renderViewMode();
                 alert('出生日期设置成功！');
@@ -2728,8 +2740,15 @@
                 // 直接保存，不再弹出确认窗口
                 appData.birthDate = birthDateStr;
                 localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
+                
+                // 清空输入框
+                document.getElementById('birthDate').value = '';
+                
+                // 更新年龄显示
                 updateBirthDateDisplay();
-                //renderViewMode();
+                
+                renderViewMode();
+                alert('出生日期设置成功！');
             } catch (error) {
                 alert('日期格式无效，请重试');
             }
@@ -3305,22 +3324,25 @@
                 };
             }
 
+            // 修改容器样式以使用整个区域
+            container.style.width = '100%';
+            
             container.innerHTML = `
-                <div class="personal-data-container">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="personal-data-container w-100">
+                    <div class="d-flex mb-2">
                         <h5 class="mb-0">个人数据管理</h5>
                         <button class="btn btn-primary btn-sm" onclick="addDataCategory()">
                             <i class="fas fa-plus"></i> 添加数据分类
                         </button>
                     </div>
-                    <div class="categories-container">
+                    <div class="categories-container px-0">
                         ${appData.personalData.categories.map((category, index) => `
-                            <div class="card mb-3 data-category" data-category-id="${category.id}">
-                                <div class="card-header d-flex justify-content-between align-items-center">
+                            <div class="card data-category" data-category-id="${category.id}">
+                                <div class="card-header">
                                     <h6 class="mb-0">${category.name}</h6>
                                     <div class="btn-group">
                                         <button class="btn btn-sm btn-outline-primary" onclick="addDataItem(${category.id})">
-                                            <i class="fas fa-plus"></i> 添加数据
+                                            <i class="fas fa-plus"></i>
                                         </button>
                                         <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${category.id})">
                                             <i class="fas fa-trash"></i>
@@ -3328,13 +3350,10 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    ${category.items ? category.items.map((item, itemIndex) => `
-                                        <div class="data-item mb-2 d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span class="data-content">${item.content}</span>
-                                                ${item.value ? `<span class="badge bg-primary ms-2">${item.value}</span>` : ''}
-                                            </div>
-                                            <div class="btn-group">
+                                    ${category.items && category.items.length > 0 ? category.items.map((item, itemIndex) => `
+                                        <div class="data-item">
+                                            <span class="data-name">${item.name}</span>
+                                            <div class="btn-group item-actions">
                                                 <button class="btn btn-sm btn-outline-secondary" onclick="editDataItem(${category.id}, ${itemIndex})">
                                                     <i class="fas fa-edit"></i>
                                                 </button>
@@ -3342,8 +3361,9 @@
                                                     <i class="fas fa-trash"></i>
                                                 </button>
                                             </div>
+                                            <span class="data-value">${item.value || ''}</span>
                                         </div>
-                                    `).join('') : ''}
+                                    `).join('') : '<div class="text-muted">暂无数据项</div>'}
                                 </div>
                             </div>
                         `).join('')}
@@ -3436,62 +3456,6 @@
                 localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
                 renderViewMode('personalData');
             }
-        }
-
-        // 显示个人数据界面
-        function displayPersonalData(container) {
-            // 确保appData中有personalData对象
-            if (!appData.personalData) {
-                appData.personalData = {
-                    categories: []
-                };
-            }
-
-            container.innerHTML = `
-                <div class="personal-data-container">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5 class="mb-0">个人数据管理</h5>
-                        <button class="btn btn-primary btn-sm" onclick="addDataCategory()">
-                            <i class="fas fa-plus"></i> 添加数据分类
-                        </button>
-                    </div>
-                    <div class="categories-container">
-                        ${appData.personalData.categories.map((category, index) => `
-                            <div class="card mb-3 data-category" data-category-id="${category.id}">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h6 class="mb-0">${category.name}</h6>
-                                    <div class="btn-group">
-                                        <button class="btn btn-sm btn-outline-primary" onclick="addDataItem(${category.id})">
-                                            <i class="fas fa-plus"></i> 
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteCategory(${category.id})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    ${category.items && category.items.length > 0 ? category.items.map((item, itemIndex) => `
-                                        <div class="data-item d-flex justify-content-between align-items-center mb-2">
-                                            <div class="d-flex" style="width: 70%;">
-                                                <span class="data-name" style="width: 120px; min-width: 120px;">${item.name}</span>
-                                                <span class="data-value" style="color: #0d6efd;">${item.value || ''}</span>
-                                            </div>
-                                            <div class="btn-group">
-                                                <button class="btn btn-sm btn-outline-secondary" onclick="editDataItem(${category.id}, ${itemIndex})">
-                                                    <i class="fas fa-edit"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-outline-danger" onclick="deleteDataItem(${category.id}, ${itemIndex})">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    `).join('') : '<div class="text-muted">暂无数据项</div>'}
-                                </div>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
         }
 
         // 添加数据分类

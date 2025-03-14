@@ -33,4 +33,696 @@
 @import 'personal-data.css';
 
 /* Responsive design (should be last) */
-@import 'responsive.css'; 
+@import 'responsive.css';
+
+/* 数据分类类别标题样式 */
+.card-header .category-title {
+    text-align: center;
+    font-weight: bold;
+    padding: 8px 0;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    color: #0d6efd;
+    letter-spacing: 1px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;
+}
+
+/* 调整按钮组样式以确保一行显示 */
+.btn-group.flex-wrap .btn-outline-primary {
+    flex: 1 0 auto;
+    min-width: auto;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* 添加响应式处理 */
+@media (min-width: 992px) {
+    .btn-group.flex-wrap .btn-outline-primary {
+        font-size: 0.875rem;
+        padding: 0.25rem 0.75rem;
+    }
+    
+    .card-header .category-title {
+        width: 30% !important;
+    }
+}
+
+@media (max-width: 991px) {
+    .btn-group.flex-wrap {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+    
+    .btn-group.flex-wrap .btn {
+        flex: 0 0 auto;
+        min-width: 80px;
+    }
+    
+    .card-header .category-title {
+        width: 50% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .btn-group.flex-wrap {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+    }
+    
+    .btn-group.flex-wrap .btn {
+        border-radius: 0.25rem !important;
+        margin: 0 !important;
+        min-width: 0;
+    }
+    
+    .card-header .category-title {
+        width: 70% !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-group.flex-wrap {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .card-header .category-title {
+        width: 90% !important;
+    }
+}
+
+/* 移除顶部空白 */
+.container.mt-4 {
+    margin-top: 0 !important;
+}
+
+/* 修改卡片标题样式 */
+.card-header {
+    padding: 0.5rem 1rem;
+}
+
+.card-header h5.card-title {
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* 移除按钮组中的多余文字 */
+.btn-group .btn-outline-primary {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 优化个人数据界面的数据分类标题样式 */
+.data-category .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 5px 5px;
+}
+
+.data-category .card-header h6 {
+    font-weight: bold;
+    margin-bottom: 3px;
+    font-size: 1.1rem;
+    color: #0d6efd;
+}
+
+.data-category .card-header .btn-group {
+    margin-top: 2px;
+}
+
+/* 个人数据管理标题居中 */
+.personal-data-container .d-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.personal-data-container h5 {
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #0d6efd;
+}
+
+/* 个人数据界面的多列布局 - 修改为更好地利用整个屏幕宽度 */
+.categories-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 改为3列布局 */
+    gap: 8px; /* 进一步减小间距 */
+    width: 100%;
+    padding: 0; /* 移除内边距 */
+    margin: 0 !important;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .categories-container {
+        grid-template-columns: repeat(2, 1fr); /* 中等屏幕显示2列 */
+    }
+}
+
+@media (max-width: 768px) {
+    .categories-container {
+        grid-template-columns: 1fr; /* 小屏幕显示1列 */
+    }
+}
+
+/* 扩展容器宽度并减小边距 */
+.goal-container {
+    width: 100% !important;
+    padding: 0 !important; /* 移除内边距 */
+}
+
+/* 调整卡片容器边距 */
+.card-body {
+    padding: 0.75rem !important; /* 减小卡片内边距 */
+}
+
+/* 调整个人数据卡片样式 */
+.data-category {
+    height: 100%;
+    margin-bottom: 0 !important; /* 覆盖原有的下边距 */
+}
+
+.data-category .card-body {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 优化数据项显示 - 调整间距和对齐 */
+.data-item {
+    display: grid;
+    grid-template-columns: minmax(30%, 35%) auto minmax(40%, 45%);
+    align-items: center;
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 0 !important;
+    min-height: 36px;
+    transition: background-color 0.2s;
+}
+
+.data-item:last-child {
+    border-bottom: none;
+}
+
+.data-item .data-name {
+    color: #666;
+    font-size: 0.9rem;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 5px;
+}
+
+.data-item .data-value {
+    font-weight: 500;
+    text-align: right;
+    color: #0d6efd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    padding-left: 5px;
+    line-height: 1.2;
+}
+
+/* 调整按钮容器 */
+.data-item .item-actions {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    min-width: 55px; /* 确保按钮区域有固定最小宽度 */
+}
+
+/* 减小按钮大小 */
+.data-item .btn-group .btn {
+    padding: 0.1rem 0.2rem;
+    font-size: 0.7rem;
+    margin: 0;
+    line-height: 1;
+}
+
+/* 调整按钮间距 */
+.data-category .card-header .btn-group .btn {
+    padding: 0.2rem 0.4rem;
+}
+
+/* 改进卡片边距 */
+.data-category {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.data-category .card-body {
+    padding: 4px !important;
+}
+
+/* 个人数据容器调整 */
+.personal-data-container {
+    padding: 0 !important;
+    background: linear-gradient(to bottom, rgba(240,245,255,0.5) 0%, rgba(255,255,255,1) 100%);
+    border-radius: 8px;
+}
+
+/* 调整卡片外边距 */
+.card {
+    margin-bottom: 10px !important;
+}
+
+/* 调整整体容器边距 */
+.container > .row > .col-md-9 > .card > .card-body {
+    padding: 0.5rem !important;
+}
+
+/* 最大化卡片空间 */
+.col-md-9 > .card {
+    margin: 0 !important;
+}
+
+.col-md-9 > .card > .card-body {
+    padding: 0.5rem !important;
+}
+
+/* 减小顶部标题边距 */
+.personal-data-container .d-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 12px !important;
+    background-color: rgba(240,245,255,0.8);
+    padding: 10px 0 8px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.personal-data-container h5 {
+    margin-bottom: 8px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2969df;
+    letter-spacing: 0.5px;
+}
+
+/* 添加数据分类按钮优化 */
+.personal-data-container .btn-primary {
+    background-color: #2969df;
+    border-color: #2969df;
+    border-radius: 20px;
+    padding: 3px 15px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.personal-data-container .btn-primary:hover {
+    background-color: #1959d0;
+    box-shadow: 0 2px 5px rgba(41, 105, 223, 0.3);
+    transform: translateY(-1px);
+}
+
+/* 卡片设计改进 */
+.data-category {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.data-category:hover {
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+/* 卡片标题美化 */
+.data-category .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 12px 5px 8px;
+    background: linear-gradient(135deg, #f0f7ff 0%, #e6f0ff 100%);
+    border-bottom: 1px solid rgba(41, 105, 223, 0.1);
+}
+
+.data-category .card-header h6 {
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-size: 1.15rem;
+    color: #2969df;
+    letter-spacing: 0.5px;
+}
+
+/* 卡片内容区域优化 */
+.data-category .card-body {
+    padding: 6px !important;
+    background-color: #fff;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+/* 数据项布局美化 */
+.data-item {
+    display: grid;
+    grid-template-columns: minmax(30%, 35%) auto minmax(40%, 45%);
+    align-items: center;
+    padding: 7px 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    margin-bottom: 0 !important;
+    min-height: 36px;
+    transition: background-color 0.2s;
+}
+
+.data-item:hover {
+    background-color: rgba(240,245,255,0.5);
+}
+
+.data-item:last-child {
+    border-bottom: none;
+}
+
+/* 数据项名称样式优化 */
+.data-item .data-name {
+    color: #444;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 5px;
+}
+
+/* 数据项值样式优化 */
+.data-item .data-value {
+    font-weight: 500;
+    text-align: right;
+    color: #2969df;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    padding-left: 5px;
+    line-height: 1.3;
+}
+
+/* 按钮样式优化 */
+.data-item .item-actions {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    min-width: 58px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.data-item:hover .item-actions {
+    opacity: 1;
+}
+
+/* 按钮样式美化 */
+.data-item .btn-group .btn {
+    padding: 0.15rem 0.25rem;
+    font-size: 0.7rem;
+    margin: 0 1px;
+    line-height: 1;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.data-item .btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+.data-item .btn-group .btn-outline-secondary {
+    color: #5a8dee;
+    border-color: #d0e1ff;
+}
+
+.data-item .btn-group .btn-outline-secondary:hover {
+    background-color: #f0f7ff;
+    color: #2969df;
+}
+
+.data-item .btn-group .btn-outline-danger {
+    color: #ff5b5c;
+    border-color: #ffd0d0;
+}
+
+.data-item .btn-group .btn-outline-danger:hover {
+    background-color: #fff0f0;
+    color: #ff3e3e;
+}
+
+/* 卡片顶部按钮优化 */
+.data-category .card-header .btn-group .btn {
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    margin: 0 2px;
+    transition: all 0.2s;
+}
+
+.data-category .card-header .btn-group .btn-outline-primary {
+    color: #2969df;
+    border-color: #c0d6ff;
+}
+
+.data-category .card-header .btn-group .btn-outline-primary:hover {
+    background-color: #f0f7ff;
+    color: #2969df;
+}
+
+.data-category .card-header .btn-group .btn-outline-danger {
+    color: #ff5b5c;
+    border-color: #ffd0d0;
+}
+
+.data-category .card-header .btn-group .btn-outline-danger:hover {
+    background-color: #fff0f0;
+    color: #ff3e3e;
+}
+
+/* 自定义滚动条 */
+.data-category .card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.data-category .card-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.data-category .card-body::-webkit-scrollbar-thumb {
+    background: #c0d6ff;
+    border-radius: 3px;
+}
+
+.data-category .card-body::-webkit-scrollbar-thumb:hover {
+    background: #2969df;
+}
+
+/* 减小按钮组的大小 */
+.item-actions.btn-group {
+    transform: scale(0.8);
+    margin: 0;
+}
+
+/* 全局字体和颜色变量 */
+:root {
+    --primary-color: #4285f4;
+    --primary-light: #e8f0fe;
+    --primary-dark: #1a73e8;
+    --secondary-color: #5f6368;
+    --success-color: #34a853;
+    --danger-color: #ea4335;
+    --warning-color: #fbbc05;
+    --background-light: #f8f9fa;
+    --text-primary: #202124;
+    --text-secondary: #5f6368;
+    --text-tertiary: #80868b;
+    --border-light: #dadce0;
+    --shadow-sm: 0 1px 2px rgba(60, 64, 67, 0.1);
+    --shadow-md: 0 2px 6px rgba(60, 64, 67, 0.15);
+    --shadow-lg: 0 4px 12px rgba(60, 64, 67, 0.2);
+    --font-main: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* 全局字体设置 */
+body, button, input, select, textarea {
+    font-family: var(--font-main);
+}
+
+/* 个人数据容器样式 */
+.personal-data-container {
+    padding: 0 !important;
+    background: linear-gradient(to bottom, var(--primary-light), #ffffff);
+    border-radius: 12px;
+    color: var(--text-primary);
+}
+
+/* 个人数据管理标题样式 */
+.personal-data-container .d-flex {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 12px !important;
+    background-color: rgba(66, 133, 244, 0.08);
+    padding: 12px 0 10px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.personal-data-container h5 {
+    margin-bottom: 8px;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--primary-dark);
+    letter-spacing: 0.3px;
+}
+
+/* 添加数据分类按钮 */
+.personal-data-container .btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.personal-data-container .btn-primary:hover {
+    background-color: var(--primary-dark);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* 卡片设计 */
+.data-category {
+    border: none;
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.data-category:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+/* 卡片标题 */
+.data-category .card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 14px 5px 10px;
+    background: linear-gradient(135deg, var(--primary-light), rgba(232, 240, 254, 0.6));
+    border-bottom: 1px solid rgba(66, 133, 244, 0.1);
+}
+
+.data-category .card-header h6 {
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-size: 1.15rem;
+    color: var(--primary-dark);
+    letter-spacing: 0.3px;
+}
+
+/* 数据项名称 */
+.data-item .data-name {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 5px;
+}
+
+/* 数据项值 */
+.data-item .data-value {
+    font-weight: 500;
+    text-align: right;
+    color: var(--primary-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
+    padding-left: 5px;
+    line-height: 1.3;
+}
+
+/* 数据项悬停效果 */
+.data-item:hover {
+    background-color: rgba(66, 133, 244, 0.05);
+}
+
+/* 按钮样式 */
+.data-item .btn-group .btn-outline-secondary {
+    color: var(--primary-color);
+    border-color: var(--border-light);
+}
+
+.data-item .btn-group .btn-outline-secondary:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.data-item .btn-group .btn-outline-danger {
+    color: var(--danger-color);
+    border-color: rgba(234, 67, 53, 0.2);
+}
+
+.data-item .btn-group .btn-outline-danger:hover {
+    background-color: rgba(234, 67, 53, 0.1);
+    color: var(--danger-color);
+}
+
+/* 卡片顶部按钮 */
+.data-category .card-header .btn-group .btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--border-light);
+}
+
+.data-category .card-header .btn-group .btn-outline-primary:hover {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.data-category .card-header .btn-group .btn-outline-danger {
+    color: var(--danger-color);
+    border-color: rgba(234, 67, 53, 0.2);
+}
+
+.data-category .card-header .btn-group .btn-outline-danger:hover {
+    background-color: rgba(234, 67, 53, 0.1);
+    color: var(--danger-color);
+}
+
+/* 自定义滚动条 */
+.data-category .card-body::-webkit-scrollbar-thumb {
+    background: var(--primary-light);
+    border-radius: 3px;
+}
+
+.data-category .card-body::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+} 

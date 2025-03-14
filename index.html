@@ -16,7 +16,7 @@
             <div class="col-md-3">
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="card-title">设置</h5>
+                        <!-- 删除设置标题 -->
                     </div>
                     <div class="card-body">
                         <form class="mb-3" id="birthDateForm">
@@ -26,7 +26,6 @@
                             </div>
                             <button class="btn btn-primary w-100" type="submit">设置出生日期</button>
                         </form>
-                        <button class="btn btn-primary w-100 mb-3" onclick="showAgeSettingsModal()">添加时间进度</button>
                         <form id="goalForm">
                             <div class="mb-3">
                                 <label class="form-label">存款内容:</label>
@@ -74,7 +73,7 @@
                                 <div id="currentTime"></div>
                             </div>
                             <button class="btn btn-primary mt-3" onclick="window.location.href='money-goal-tracker.html'">
-                                <i class="fas fa-chart-line"></i> 赚钱目标追踪
+                                <i class="fas fa-chart-line"></i> 赚钱目标进度
                             </button>
                         </div>
                     </div>
@@ -84,26 +83,25 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="d-flex flex-column flex-md-row align-items-start align-items-md-center">
-                            <h5 class="card-title mb-2 mb-md-0 me-md-3">火星进度</h5>
-                            <div class="btn-group flex-wrap" role="group">
+                            <div class="btn-group flex-wrap w-100" role="group">
                                 <input class="btn-check" id="savingsMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="savingsMode">存款进度</label>
+                                <label class="btn btn-outline-primary btn-sm" for="savingsMode">存款进度</label>
                                 <input class="btn-check" id="ageMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="ageMode">时间进度</label>
+                                <label class="btn btn-outline-primary btn-sm" for="ageMode">时间进度</label>
                                 <input class="btn-check" id="historyMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="historyMode">历史记录</label>
+                                <label class="btn btn-outline-primary btn-sm" for="historyMode">历史记录</label>
                                 <input class="btn-check" id="archiveMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="archiveMode">归档记录</label>
+                                <label class="btn btn-outline-primary btn-sm" for="archiveMode">归档记录</label>
                                 <input class="btn-check" id="todoMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="todoMode">待办事项</label>
+                                <label class="btn btn-outline-primary btn-sm" for="todoMode">待办事项</label>
                                 <input class="btn-check" id="inspirationMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="inspirationMode">灵感记录</label>
+                                <label class="btn btn-outline-primary btn-sm" for="inspirationMode">灵感记录</label>
                                 <input class="btn-check" id="habitMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="habitMode">习惯打卡</label>
+                                <label class="btn btn-outline-primary btn-sm" for="habitMode">习惯打卡</label>
                                 <input class="btn-check" id="timeTrackingMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="timeTrackingMode">时间统计</label>
+                                <label class="btn btn-outline-primary btn-sm" for="timeTrackingMode">时间统计</label>
                                 <input class="btn-check" id="personalDataMode" name="viewMode" type="radio" />
-                                <label class="btn btn-outline-primary" for="personalDataMode">个人数据</label>
+                                <label class="btn btn-outline-primary btn-sm" for="personalDataMode">个人数据</label>
                             </div>
                         </div>
                         <div class="d-flex flex-wrap align-items-center gap-2">

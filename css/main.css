@@ -1,0 +1,36 @@
+/**
+ * Main CSS file - imports all modular CSS components
+ */
+
+/* Base styles */
+@import 'base.css';
+
+/* Layout styles */
+@import 'layout.css';
+
+/* Components */
+@import 'components.css';
+
+/* Progress bars */
+@import 'progress.css';
+
+/* Savings goals */
+@import 'goals.css';
+
+/* Age tracking */
+@import 'age-tracking.css';
+
+/* Inspiration management */
+@import 'inspiration.css';
+
+/* Todo list and quadrant system */
+@import 'todo.css';
+
+/* Time tracking */
+@import 'time-tracking.css';
+
+/* Personal data management */
+@import 'personal-data.css';
+
+/* Responsive design (should be last) */
+@import 'responsive.css'; 

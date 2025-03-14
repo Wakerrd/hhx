@@ -1,0 +1,220 @@
+/* Todo list and quadrant system styles */
+
+/* Quadrant grid layout */
+.quadrant-grid {
+    display: grid;
+    grid-template-columns: minmax(350px, 1fr) minmax(350px, 1fr);
+    grid-template-rows: repeat(2, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+    min-height: 800px;
+    height: auto;
+    max-width: 1600px;
+    margin: 0 auto;
+}
+
+/* Quadrant styling */
+.quadrant {
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px;
+    min-height: 200px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Quadrant colors and themes */
+.quadrant-1 {
+    border-color: #e74c3c;  /* Red - important and urgent */
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+.quadrant-2 {
+    border-color: #3498db;  /* Blue - important not urgent */
+    background-color: rgba(52, 152, 219, 0.05);
+}
+
+.quadrant-3 {
+    border-color: #2ecc71;  /* Green - urgent not important */
+    background-color: rgba(46, 204, 113, 0.05);
+}
+
+.quadrant-4 {
+    border-color: #f1c40f;  /* Yellow - not important not urgent */
+    background-color: rgba(241, 196, 15, 0.05);
+}
+
+/* Quadrant headers */
+.quadrant-header {
+    margin-bottom: 1rem;
+}
+
+.quadrant-header.quadrant-1 {
+    color: #e74c3c;
+}
+
+.quadrant-header.quadrant-2 {
+    color: #3498db;
+}
+
+.quadrant-header.quadrant-3 {
+    color: #2ecc71;
+}
+
+.quadrant-header.quadrant-4 {
+    color: #f1c40f;
+}
+
+.quadrant-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #2d3748;
+    margin: 0;
+}
+
+.quadrant-1 .quadrant-title {
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.quadrant-2 .quadrant-title {
+    color: #3498db;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.quadrant-3 .quadrant-title {
+    color: #2ecc71;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.quadrant-4 .quadrant-title {
+    color: #f1c40f;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Todo list */
+.todo-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 0.75rem;
+    min-height: 50px;
+    padding: 8px;
+}
+
+/* Todo items */
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid #f0f2f5;
+    cursor: move;
+    transition: all 0.2s ease;
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-item.dragging {
+    opacity: 0.5;
+    background: #f8f9fa;
+}
+
+.todo-item.drag-over-top {
+    border-top: 2px solid #3498db;
+}
+
+.todo-item.drag-over-bottom {
+    border-bottom: 2px solid #3498db;
+}
+
+.todo-checkbox {
+    width: 18px;
+    height: 18px;
+}
+
+.todo-text {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #4a5568;
+}
+
+.todo-text.completed {
+    text-decoration: line-through;
+    color: #a0aec0;
+}
+
+.todo-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Add todo section */
+.add-todo {
+    margin-top: auto;
+    padding-top: 0.75rem;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.add-todo input {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.add-todo button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+}
+
+.add-todo-container {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    display: flex;
+    gap: 10px;
+    width: calc(100% - 30px);
+}
+
+.add-todo-input {
+    flex: 1;
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    min-width: 200px;
+    width: calc(100% - 65px);
+}
+
+.add-todo-btn {
+    width: 55px;
+    padding: 6px 12px;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+/* View container */
+.view-container {
+    display: none;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.view-container.active {
+    display: block;
+} 

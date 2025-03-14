@@ -1,0 +1,98 @@
+/* Time tracking styles */
+
+.time-tracking-container {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.event-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.event-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.event-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.time-input {
+    width: 120px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+
+.time-total {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.add-event-btn {
+    margin-bottom: 1rem;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-event-btn:hover {
+    background-color: #0056b3;
+}
+
+.event-card .btn {
+    padding: 4px 12px;
+    font-size: 14px;
+    margin-left: 8px;
+}
+
+.event-card .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: white;
+}
+
+.event-card .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+    .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .event-name {
+        margin-bottom: 10px;
+    }
+    
+    .time-input {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .event-card .btn {
+        margin-left: 0;
+        margin-right: 8px;
+    }
+}
+ 

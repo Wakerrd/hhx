@@ -1,0 +1,332 @@
+/* Inspiration management styles */
+
+/* Container layout */
+.inspiration-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.inspiration-wrapper {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
+
+/* Header and search */
+.inspiration-header {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.inspiration-search {
+    position: relative;
+    flex: 1;
+    max-width: 300px;
+    margin-right: 1rem;
+}
+
+.inspiration-search input {
+    width: 100%;
+    padding: 0.5rem 1rem 0.5rem 2.2rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.inspiration-search input:focus {
+    outline: none;
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+}
+
+.inspiration-search i {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* Filters and tags */
+.inspiration-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    padding: 0.5rem;
+    background: #fff;
+    border-radius: 8px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.tag-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.tag-btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-btn:hover {
+    background: #e4e6eb;
+    color: #333;
+}
+
+.tag-btn.active {
+    background: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* Tag selection and management */
+.tag-selection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tag-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #e2e8f0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+}
+
+.tag-item button {
+    padding: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0,0,0,0.1);
+    color: #666;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-item button:hover {
+    background: rgba(0,0,0,0.2);
+    color: #333;
+}
+
+.current-tags {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.current-tags .form-label {
+    margin-bottom: 0.75rem;
+    color: #4a5568;
+    font-weight: 500;
+}
+
+/* Inspiration grid */
+.inspiration-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.25rem 0;
+}
+
+/* Inspiration items */
+.inspiration-item {
+    background: white;
+    border-radius: 4px;
+    padding: 0.35rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    cursor: move;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.inspiration-item.dragging {
+    opacity: 0.5;
+    background: #f8f9fa;
+}
+
+.inspiration-header-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.25rem;
+    margin-bottom: 0.15rem;
+}
+
+.inspiration-number {
+    font-size: 0.8rem;
+    color: #666;
+    min-width: 20px;
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 2px;
+    padding: 0.1rem 0.2rem;
+}
+
+.inspiration-content {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+}
+
+.inspiration-text {
+    color: #4a5568;
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.5;
+    padding: 4px 0;
+}
+
+.inspiration-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.15rem;
+    font-size: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.inspiration-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.inspiration-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.inspiration-tag {
+    background: #f0f0f0;
+    color: #666;
+    padding: 0.05rem 0.25rem;
+    border-radius: 2px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+}
+
+.inspiration-time {
+    color: #718096;
+    font-size: 0.75rem;
+}
+
+/* Actions and buttons */
+.inspiration-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.inspiration-actions button {
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 45px;
+    height: 24px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inspiration-actions .btn-edit {
+    background: linear-gradient(45deg, #3498db, #2980b9);
+    color: white;
+}
+
+.inspiration-actions .btn-delete {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+    color: white;
+}
+
+.inspiration-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.inspiration-actions button i {
+    font-size: 0.75rem;
+    margin-right: 2px;
+}
+
+.inspiration-actions-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.inspiration-actions-group .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.inspiration-actions-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.inspiration-actions-group .btn i {
+    font-size: 0.875rem;
+}
+
+.inspiration-checkbox {
+    display: flex;
+    align-items: center;
+    margin-right: 0.25rem;
+}
+
+.inspiration-select {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+} 

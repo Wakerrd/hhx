@@ -1,0 +1,269 @@
+/* Age tracking styles */
+
+/* Age progress card */
+.age-progress-card {
+    background: linear-gradient(to bottom right, #f8f9fa, #ffffff);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.age-progress-card .card-title {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.age-progress-card .card-text {
+    color: #34495e;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+}
+
+.age-progress-card .progress {
+    height: 1.5rem;
+    border-radius: 0.75rem;
+    background-color: #e9ecef;
+    margin: 1rem 0;
+}
+
+.age-progress-card .progress-bar {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    border-radius: 0.75rem;
+    transition: width 0.3s ease;
+}
+
+.age-progress-card .progress-bar.bg-danger {
+    background: linear-gradient(to right, #e74c3c, #c0392b);
+}
+
+.age-progress-card .btn {
+    background: #3498db;
+    border: none;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.age-progress-card .btn:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+/* Age goals section */
+.age-goals-section {
+    margin-bottom: 1rem;
+}
+
+.age-category-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 1rem 0 0.75rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.age-category-title.yearly {
+    background: rgba(231, 76, 60, 0.1);
+    color: #c0392b;
+}
+
+.age-category-title.yearly::before {
+    content: "📅";
+}
+
+.age-category-title.lifetime {
+    background: rgba(52, 152, 219, 0.1);
+    color: #2980b9;
+}
+
+.age-category-title.lifetime::before {
+    content: "🌟";
+}
+
+/* Age goals grid */
+.age-goals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 0.35rem;
+    padding: 0 0.35rem;
+}
+
+/* Age goal cards */
+.age-goal-card {
+    border: none;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    margin-bottom: 0.75rem;
+}
+
+.age-goal-card .card-body {
+    padding: 0.5rem !important;
+}
+
+/* Yearly goal styling */
+.age-goal-card.yearly {
+    border-left: 4px solid #e74c3c;
+    background: linear-gradient(to right, rgba(231, 76, 60, 0.05), transparent);
+}
+
+.age-goal-card.yearly .goal-name::before {
+    content: "📅";
+    margin-right: 8px;
+}
+
+.age-goal-card.yearly .progress-bar {
+    background: linear-gradient(45deg, #e74c3c, #c0392b);
+}
+
+/* Lifetime goal styling */
+.age-goal-card.lifetime {
+    border-left: 4px solid #3498db;
+    background: linear-gradient(to right, rgba(52, 152, 219, 0.05), transparent);
+}
+
+.age-goal-card.lifetime .goal-name::before {
+    content: "🌟";
+    margin-right: 8px;
+}
+
+.age-goal-card.lifetime .progress-bar {
+    background: linear-gradient(45deg, #f39c12, #e67e22) !important;
+}
+
+/* Goal info layout */
+.age-goal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.goal-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a365d;
+}
+
+/* Age range display */
+.age-range {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #4a5568;
+    font-size: 0.85rem;
+    margin-bottom: 0.35rem;
+}
+
+.age-range span {
+    color: #2c5282;
+    font-weight: 500;
+}
+
+.age-arrow {
+    color: #a0aec0;
+    font-weight: normal;
+}
+
+/* Time information */
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f7fafc;
+    padding: 0.35rem 0.5rem;
+    border-radius: 4px;
+    margin-top: 0.25rem;
+}
+
+.remaining-days {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: #4a5568;
+    font-size: 0.85rem;
+}
+
+.remaining-days i {
+    color: #718096;
+}
+
+.days-count {
+    color: #e53e3e;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.days-label {
+    color: #718096;
+    font-size: 0.8rem;
+}
+
+/* Time progress values */
+.time-value {
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.time-value.urgent {
+    color: #c53030;
+}
+
+.time-value.warning {
+    color: #b7791f;
+}
+
+.time-value.normal {
+    color: #2b6cb0;
+}
+
+/* Progress section */
+.progress-section {
+    margin: 0.35rem 0 0 0;
+}
+
+.progress {
+    margin: 0;
+    height: 0.5rem !important;
+}
+
+/* Goal actions */
+.age-goal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    margin-top: 0.5rem;
+}
+
+.age-goal-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+    color: #ffffff;
+}
+
+.age-goal-actions .btn-icon {
+    color: #ffffff;
+}
+
+.age-goal-card .btn-sm {
+    padding: 0.15rem 0.35rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1.2;
+    border-radius: 4px;
+}
+
+.age-goal-card .btn-icon {
+    font-size: 0.7rem;
+    margin-right: 0.15rem;
+} 

@@ -1,0 +1,161 @@
+/* Savings goals styles */
+
+/* Total saved display */
+.total-saved-container {
+    background: linear-gradient(145deg, #f8f9fa, #ffffff);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-top: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.total-saved-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.total-saved-amount {
+    color: #2ecc71;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.text-success {
+    color: #38a169 !important;
+    font-weight: 500;
+}
+
+h3.text-success {
+    font-size: 1.25rem;
+    margin-top: 1rem;
+}
+
+/* Timeline view for savings history */
+.timeline-view {
+    padding: 20px;
+}
+
+.timeline-group {
+    margin-bottom: 2rem;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.timeline-date {
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-radius: 8px 8px 0 0;
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.timeline-items {
+    padding: 15px;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 15px;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #6c757d;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 16px;
+    width: 2px;
+    height: calc(100% + 7px);
+    background: #e9ecef;
+}
+
+.timeline-item:last-child::after {
+    display: none;
+}
+
+/* Archive styles */
+.archive-category-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4a5568;
+    margin: 1rem 0 0.75rem 0.5rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.archive-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.archive-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    padding: 0.75rem;
+}
+
+.archive-card .card-body {
+    padding: 0 !important;
+}
+
+.archive-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.archive-name {
+    font-weight: 500;
+    color: #2d3748;
+    font-size: 0.9rem;
+}
+
+.archive-target {
+    color: #718096;
+    font-size: 0.85rem;
+}
+
+.archive-date {
+    color: #a0aec0;
+    font-size: 0.8rem;
+}
+
+.btn-restore {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+.text-muted.small {
+    color: #a0aec0 !important;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 1rem;
+} 

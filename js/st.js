@@ -144,6 +144,9 @@
                         element.checked = true;
                     }
                 }
+                
+                // 保存当前视图模式
+                localStorage.setItem('currentViewMode', view);
             }
 
             // 根据当前视图显示相应内容
@@ -273,15 +276,15 @@
 
             // 初始化视图模式
             const viewModes = {
-                'savings': 'savingsMode',
-                'age': 'ageMode',
-                'history': 'historyMode',
-                'archive': 'archiveMode',
-                'todo': 'todoMode',
-                'inspiration': 'inspirationMode',
-                'habit': 'habitMode',
-                'timeTracking': 'timeTrackingMode',
-                'personalData': 'personalDataMode'
+                'savingsMode': 'savings',
+                'ageMode': 'age',
+                'historyMode': 'history',
+                'archiveMode': 'archive',
+                'todoMode': 'todo',
+                'inspirationMode': 'inspiration',
+                'habitMode': 'habit',
+                'timeTrackingMode': 'timeTracking',
+                'personalDataMode': 'personalData'
             };
 
             // 为每个视图模式添加事件监听
@@ -290,14 +293,19 @@
                 if (element) {
                     element.addEventListener('change', () => {
                         if (element.checked) {
+                            // 保存当前视图模式
+                            localStorage.setItem('currentViewMode', viewName);
                             renderViewMode(viewName);
                         }
                     });
                 }
             });
 
+            // 从本地存储获取上次的视图模式
+            const lastViewMode = localStorage.getItem('currentViewMode') || 'savings';
+            
             // 更新UI
-            renderViewMode();
+            renderViewMode(lastViewMode);
             updateDateTime();
             setInterval(updateDateTime, 1000);
         }
@@ -1787,6 +1795,12 @@
         // 删除灵感函数
         function deleteInspiration(id) {
             appData.inspirations = appData.inspirations.filter(inspiration => inspiration.id !== id);
+            
+            // 重新排序并更新编号
+            appData.inspirations.forEach((inspiration, index) => {
+                inspiration.number = index + 1;
+            });
+            
             localStorage.setItem(CONFIG.STORAGE_KEY, JSON.stringify(appData));
             renderViewMode();
         }

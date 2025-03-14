@@ -3,6 +3,8 @@
  */
 
 import { showToast, handleError } from './utils.js';
+import { handleGoalFormSubmit, handleMoneyFormSubmit } from './money.js';
+import { handleBirthDateFormSubmit } from './age.js';
 
 // 将关键配置集中管理，便于后期修改
 const CONFIG = {

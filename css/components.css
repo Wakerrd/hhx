@@ -194,8 +194,16 @@
 /* 习惯打卡卡片的紧凑样式 */
 .goal-container .card[data-habit-index] {
     margin-bottom: 0 !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.12);
     position: relative;
+    border: 1px solid #dee2e6;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+}
+
+.goal-container .card[data-habit-index]:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 7px rgba(0,0,0,0.15);
 }
 
 /* 重要：禁用习惯卡片上的所有金钱和硬币图标伪元素 */
@@ -244,15 +252,23 @@
 /* 习惯卡片删除按钮样式 */
 .goal-container .card[data-habit-index] .btn-danger {
     border: none;
-    border-radius: 4px;
-    font-size: 0.85rem !important;
-    padding: 3px 8px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    border-radius: 3px;
+    font-size: 0.7rem !important;
+    padding: 1px 5px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    min-width: auto;
+    line-height: 1.2;
+    opacity: 0.8;
 }
 
 .goal-container .card[data-habit-index] .btn-danger:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    transform: none;
+    box-shadow: 0 2px 3px rgba(0,0,0,0.15);
+    opacity: 1;
+}
+
+.goal-container .card[data-habit-index] .btn-danger i {
+    font-size: 0.7rem;
 }
 
 /* 紧凑的习惯列表布局 */
@@ -267,4 +283,82 @@
     line-height: 1;
     padding: 2px 8px !important;
     font-size: 0.75rem;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+/* 习惯卡片完成时样式 */
+.goal-container .card[data-habit-index]:has(.btn-outline-success:disabled) {
+    border-color: #28a745;
+    border-width: 1px;
+    background-color: rgba(40, 167, 69, 0.05);
+}
+
+/* 打卡按钮点击动画效果 */
+.habit-card-checked {
+    animation: habitCheckedPulse 0.6s ease-out;
+}
+
+@keyframes habitCheckedPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
+}
+
+/* 打卡成功动画 */
+.habit-success-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: radial-gradient(circle, rgba(40, 167, 69, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+    opacity: 0;
+    animation: habitSuccessFlash 0.6s ease-out;
+    z-index: 10;
+}
+
+@keyframes habitSuccessFlash {
+    0% {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+/* 习惯完成后的样式 */
+.goal-container .card.habit-completed {
+    display: none;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+}
+
+/* 进度条动画效果 */
+.goal-container .card[data-habit-index] .progress-bar {
+    transition: width 0.4s ease-out;
+}
+
+/* 增强习惯卡片卡片标题 */
+.goal-container .card[data-habit-index] .card-title {
+    font-size: 0.9rem;
+    padding: 0 1.5rem;
+    width: 100%;
+    text-align: center;
 } 

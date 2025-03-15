@@ -683,7 +683,7 @@
                                          aria-valuenow="${progress}"
                                          aria-valuemin="0"
                                          aria-valuemax="100">
-                                        ${progress.toFixed(1)}%
+                                        ⌛️ ${progress.toFixed(1)}%
                                     </div>
                                 </div>
                             </div>
@@ -2574,7 +2574,7 @@
                                      aria-valuenow="${progress}"
                                      aria-valuemin="0"
                                      aria-valuemax="100">
-                                    ${Math.round(progress)}%
+                                    💰 ${progress.toFixed(1)}%
                                 </div>
                             </div>
                             <div class="remaining-amount">
@@ -3100,6 +3100,8 @@
         window.showBulkInputModal = showBulkInputModal;        // 添加习惯打卡视图的显示逻辑
         function showHabitView() {
             const container = document.querySelector('.goal-container');
+            
+            // 恢复原始布局结构
             container.innerHTML = `
                 <!-- 添加习惯表单 -->
                 <div class="card mb-2">
@@ -3147,8 +3149,8 @@
                                 <div class="card-body p-2">
                                     <div class="d-flex flex-column align-items-center mb-1">
                                         <h6 class="card-title mb-0 text-center">${habit.name}</h6>
-                                        <button class="btn btn-danger btn-sm py-0 px-2 position-absolute" style="right: 5px; top: 5px;" onclick="deleteHabit(${index})">
-                                            <i class="fas fa-trash"></i>
+                                        <button class="btn btn-danger btn-sm position-absolute" style="right: 3px; top: 3px; padding: 0 3px !important;" onclick="deleteHabit(${index})">
+                                            <i class="fas fa-times"></i>
                                         </button>
                                     </div>
                                     <div class="progress" style="height: 6px;">
@@ -3160,7 +3162,7 @@
                                         <button class="btn btn-outline-success btn-sm py-0 px-2" 
                                                 onclick="incrementHabit(${index})"
                                                 ${progress >= 100 ? 'disabled' : ''}>
-                                            🏆 打卡
+                                            ${progress >= 100 ? '🎉 完成!' : '🏆 打卡'}
                                         </button>
                                     </div>
                                 </div>
@@ -3218,9 +3220,46 @@
                                     progress >= 70 ? 'bg-info' :
                                     progress >= 40 ? 'bg-warning' : 'bg-primary';
                 
-                // 获取当前习惯的卡片（修改为使用data-habit-index属性来定位）
+                // 获取当前习惯的卡片
                 const currentCard = document.querySelector(`.goal-container [data-habit-index="${index}"]`);
                 if (currentCard) {
+                    // 添加卡片打卡动画
+                    currentCard.classList.add('habit-card-checked');
+                    
+                    // 创建打卡成功动画元素
+                    const successAnimation = document.createElement('div');
+                    successAnimation.className = 'habit-success-animation';
+                    currentCard.appendChild(successAnimation);
+                    
+                    // 移除动画类
+                    setTimeout(() => {
+                        currentCard.classList.remove('habit-card-checked');
+                        // 移除打卡成功动画元素
+                        if (successAnimation.parentNode) {
+                            successAnimation.parentNode.removeChild(successAnimation);
+                        }
+                    }, 800);
+                    
+                    // 打卡按钮动画
+                    const incrementBtn = currentCard.querySelector('.btn-outline-success');
+                    if (incrementBtn) {
+                        const originalColor = incrementBtn.style.color;
+                        const originalBg = incrementBtn.style.backgroundColor;
+                        const originalText = incrementBtn.innerHTML;
+                        
+                        // 按钮点击反馈
+                        incrementBtn.style.backgroundColor = '#28a745';
+                        incrementBtn.style.color = 'white';
+                        incrementBtn.innerHTML = '✓';
+                        
+                        // 300ms后恢复按钮样式
+                        setTimeout(() => {
+                            incrementBtn.style.backgroundColor = originalBg;
+                            incrementBtn.style.color = originalColor;
+                            incrementBtn.innerHTML = originalText;
+                        }, 500);
+                    }
+                    
                     // 更新进度条
                     const progressBar = currentCard.querySelector('.progress-bar');
                     if (progressBar) {
@@ -3235,9 +3274,9 @@
                     }
                     
                     // 如果达到目标，禁用打卡按钮
-                    const incrementBtn = currentCard.querySelector('.btn-outline-success');
-                    if (incrementBtn && progress >= 100) {
+                    if (progress >= 100 && incrementBtn) {
                         incrementBtn.disabled = true;
+                        incrementBtn.innerHTML = '🎉完成';
                     }
                 }
             }

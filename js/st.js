@@ -563,47 +563,76 @@
             yearlyGoals.sort(sortByTargetDate);
             lifetimeGoals.sort(sortByTargetDate);
 
+            // 创建三列布局的容器
+            const col1 = document.createElement('div');
+            col1.className = 'age-goals-section yearly-column1';
+            
+            const col2 = document.createElement('div');
+            col2.className = 'age-goals-section yearly-column2';
+            
+            const col3 = document.createElement('div');
+            col3.className = 'age-goals-section lifetime-column';
+            
+            // 添加标题
+            const yearlyTitle1 = document.createElement('h6');
+            yearlyTitle1.className = 'age-category-title yearly';
+            yearlyTitle1.textContent = '今年进度';
+            col1.appendChild(yearlyTitle1);
+            
+            const yearlyTitle2 = document.createElement('h6');
+            yearlyTitle2.className = 'age-category-title yearly';
+            yearlyTitle2.textContent = '今年进度';
+            col2.appendChild(yearlyTitle2);
+            
+            const lifetimeTitle = document.createElement('h6');
+            lifetimeTitle.className = 'age-category-title lifetime';
+            lifetimeTitle.textContent = '人生总进度';
+            col3.appendChild(lifetimeTitle);
+            
+            // 创建年度目标卡片并平均分配到两列
             if (yearlyGoals.length > 0) {
-                const yearlySection = document.createElement('div');
-                yearlySection.className = 'age-goals-section';
+                const yearlyGrid1 = document.createElement('div');
+                yearlyGrid1.className = 'age-goals-grid';
                 
-                const yearlyTitle = document.createElement('h6');
-                yearlyTitle.className = 'age-category-title yearly';
-                yearlyTitle.textContent = '今年进度';
-                yearlySection.appendChild(yearlyTitle);
-
-                const yearlyGrid = document.createElement('div');
-                yearlyGrid.className = 'age-goals-grid';
-                yearlyGoals.forEach(goal => {
+                const yearlyGrid2 = document.createElement('div');
+                yearlyGrid2.className = 'age-goals-grid';
+                
+                yearlyGoals.forEach((goal, i) => {
                     const realIndex = appData.ageGoals.indexOf(goal);
                     const card = createGoalCard(goal, realIndex);
                     card.classList.add('yearly');
-                    yearlyGrid.appendChild(card);
+                    
+                    // 平均分配到两列
+                    if (i % 2 === 0) {
+                        yearlyGrid1.appendChild(card);
+                    } else {
+                        yearlyGrid2.appendChild(card);
+                    }
                 });
-                yearlySection.appendChild(yearlyGrid);
-                container.appendChild(yearlySection);
-            }
-
-            if (lifetimeGoals.length > 0) {
-                const lifetimeSection = document.createElement('div');
-                lifetimeSection.className = 'age-goals-section';
                 
-                const lifetimeTitle = document.createElement('h6');
-                lifetimeTitle.className = 'age-category-title lifetime';
-                lifetimeTitle.textContent = '人生总进度';
-                lifetimeSection.appendChild(lifetimeTitle);
-
+                col1.appendChild(yearlyGrid1);
+                col2.appendChild(yearlyGrid2);
+            }
+            
+            // 创建终身目标卡片
+            if (lifetimeGoals.length > 0) {
                 const lifetimeGrid = document.createElement('div');
                 lifetimeGrid.className = 'age-goals-grid';
+                
                 lifetimeGoals.forEach(goal => {
                     const realIndex = appData.ageGoals.indexOf(goal);
                     const card = createGoalCard(goal, realIndex);
                     card.classList.add('lifetime');
                     lifetimeGrid.appendChild(card);
                 });
-                lifetimeSection.appendChild(lifetimeGrid);
-                container.appendChild(lifetimeSection);
+                
+                col3.appendChild(lifetimeGrid);
             }
+            
+            // 添加列到容器
+            container.appendChild(col1);
+            container.appendChild(col2);
+            container.appendChild(col3);
 
             function createGoalCard(goal, index) {
                 const targetDate = parseDateString(goal.targetDate);

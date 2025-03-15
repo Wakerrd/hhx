@@ -564,6 +564,7 @@ textarea {
         margin: 20px 15px;
         max-height: calc(100vh - 40px);
         overflow-y: auto;
+        padding: 20px 15px;
     }
 
     .form-actions {
@@ -595,6 +596,71 @@ textarea {
     .goal-details {
         flex-direction: column;
         gap: 8px;
+    }
+    
+    /* 移动端模态框优化 */
+    .modal {
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    
+    .modal-content {
+        width: 92%;
+        max-height: 85vh;
+        margin: 10px auto !important;
+        overflow-y: auto;
+        padding: 15px;
+    }
+    
+    /* 确保表单元素在移动设备上足够大 */
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        font-size: 16px !important; /* 防止iOS缩放 */
+        padding: 10px !important;
+        margin-bottom: 2px;
+    }
+    
+    /* 确保按钮区域有足够空间 */
+    .form-actions {
+        margin-top: 15px;
+        padding-bottom: 5px;
+    }
+    
+    /* 为模态框添加更大的点击区域 */
+    .close-btn {
+        padding: 12px !important;
+        top: 10px;
+        right: 10px;
+        font-size: 24px !important;
+    }
+    
+    /* 调整表单布局，使其更紧凑 */
+    .form-group {
+        margin-bottom: 12px !important;
+    }
+    
+    .form-group label {
+        font-size: 14px !important;
+        margin-bottom: 4px !important;
+    }
+    
+    /* 确保表单按钮足够大 */
+    .form-actions button,
+    .money-input-actions button {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 16px !important;
+        margin-bottom: 8px !important;
+    }
+    
+    /* 确保输入框不被键盘挡住 */
+    input:focus, 
+    textarea:focus, 
+    select:focus {
+        position: relative;
+        z-index: 1;
     }
 }
 

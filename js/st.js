@@ -2720,12 +2720,12 @@
                 // 已设置出生日期时显示年龄和修改按钮
                 birthDateForm.innerHTML = `
                     <div class="current-age mb-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
+                        <div class="d-flex flex-column align-items-center position-relative">
+                            <div class="text-center mb-2">
                                 <div class="text-muted small">当前年龄</div>
-                                <div class="fs-5 fw-bold">${calculateAge(appData.birthDate)}岁</div>
+                                <div class="fs-5 fw-bold age-display">${calculateAge(appData.birthDate)}岁</div>
                             </div>
-                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="showBirthDateInput()">
+                            <button type="button" class="btn btn-outline-primary btn-sm position-absolute" style="right: 0; top: 0;" onclick="showBirthDateInput()">
                                 修改
                             </button>
                         </div>
@@ -3125,7 +3125,7 @@
                 </div>
 
                 <!-- 习惯列表 -->
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1">
             `;
             
             if (!appData.habits) {
@@ -3145,22 +3145,22 @@
                         <div class="col">
                             <div class="card h-100" data-habit-index="${index}">
                                 <div class="card-body p-2">
-                                    <div class="d-flex justify-content-between align-items-center mb-1">
-                                        <h6 class="card-title mb-0">${habit.name}</h6>
-                                        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteHabit(${index})">
+                                    <div class="d-flex flex-column align-items-center mb-1">
+                                        <h6 class="card-title mb-0 text-center">${habit.name}</h6>
+                                        <button class="btn btn-danger btn-sm py-0 px-2 position-absolute" style="right: 5px; top: 5px;" onclick="deleteHabit(${index})">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
-                                    <div class="progress mb-1" style="height: 6px;">
+                                    <div class="progress" style="height: 6px;">
                                         <div class="progress-bar ${progressClass}" role="progressbar" 
                                              style="width: ${progress}%"></div>
                                     </div>
-                                    <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex justify-content-between align-items-center mt-1">
                                         <div class="text-muted small">进度: ${habit.count || 0}/${habit.target}</div>
                                         <button class="btn btn-outline-success btn-sm py-0 px-2" 
                                                 onclick="incrementHabit(${index})"
                                                 ${progress >= 100 ? 'disabled' : ''}>
-                                            <i class="fas fa-plus"></i> 打卡
+                                            🏆 打卡
                                         </button>
                                     </div>
                                 </div>

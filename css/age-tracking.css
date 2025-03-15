@@ -266,4 +266,26 @@
 .age-goal-card .btn-icon {
     font-size: 0.7rem;
     margin-right: 0.15rem;
+}
+
+/* 年龄数字荧光效果 */
+.age-display {
+    background: linear-gradient(to right, #9c27b0, #673ab7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 5px rgba(156, 39, 176, 0.7), 0 0 10px rgba(103, 58, 183, 0.5);
+    font-weight: bold;
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    animation: glowPurple 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes glowPurple {
+    from {
+        text-shadow: 0 0 5px rgba(156, 39, 176, 0.7), 0 0 10px rgba(103, 58, 183, 0.5);
+    }
+    to {
+        text-shadow: 0 0 10px rgba(156, 39, 176, 0.8), 0 0 20px rgba(103, 58, 183, 0.6), 0 0 30px rgba(103, 58, 183, 0.4);
+    }
 } 

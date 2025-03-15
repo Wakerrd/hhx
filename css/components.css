@@ -189,4 +189,82 @@
 .view-switch button:hover {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* 习惯打卡卡片的紧凑样式 */
+.goal-container .card[data-habit-index] {
+    margin-bottom: 0 !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    position: relative;
+}
+
+/* 重要：禁用习惯卡片上的所有金钱和硬币图标伪元素 */
+.goal-container .card[data-habit-index]::before,
+.goal-container .card[data-habit-index]::after,
+.goal-container .card[data-habit-index] *::before,
+.goal-container .card[data-habit-index] *::after {
+    content: "" !important;
+    display: none !important;
+}
+
+/* 仅恢复图标按钮中的图标 */
+.goal-container .card[data-habit-index] .btn i::before {
+    display: inline-block !important;
+    content: inherit !important;
+}
+
+.goal-container .card[data-habit-index] .card-body {
+    padding: 0.4rem !important;
+}
+
+.goal-container .card[data-habit-index] .mb-1 {
+    margin-bottom: 0.15rem !important;
+}
+
+.goal-container .card[data-habit-index] .progress {
+    margin-bottom: 0.15rem !important;
+    height: 4px !important;
+}
+
+.goal-container .card[data-habit-index] .mt-1 {
+    margin-top: 0.2rem !important;
+}
+
+.goal-container .card[data-habit-index] .card-title {
+    font-size: 0.9rem;
+    padding: 0 1.5rem;
+    width: 100%;
+    text-align: center;
+}
+
+.goal-container .card[data-habit-index] .text-muted.small {
+    font-size: 0.75rem;
+}
+
+/* 习惯卡片删除按钮样式 */
+.goal-container .card[data-habit-index] .btn-danger {
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem !important;
+    padding: 3px 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.goal-container .card[data-habit-index] .btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+}
+
+/* 紧凑的习惯列表布局 */
+.goal-container .row.g-1 {
+    margin-bottom: 0 !important;
+    row-gap: 0.25rem !important;
+}
+
+/* 打卡按钮样式 */
+.goal-container .card[data-habit-index] .btn-outline-success {
+    border-width: 1px;
+    line-height: 1;
+    padding: 2px 8px !important;
+    font-size: 0.75rem;
 } 

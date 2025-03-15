@@ -727,4 +727,48 @@ body, button, input, select, textarea {
 
 .data-category .card-body::-webkit-scrollbar-thumb:hover {
     background: var(--primary-color);
+}
+
+/* 全局禁用装饰性伪元素 - 去除所有透明小框 */
+.card::before, 
+.card::after,
+.card-title::before, 
+.card-title::after,
+.card-header::before, 
+.card-header::after,
+.card-body::before, 
+.card-body::after,
+.goal-container *::before,
+.goal-container *::after {
+    content: "" !important;
+    display: none !important;
+}
+
+/* 恢复功能性图标和UI元素 */
+.btn i::before,
+.fas::before,
+.fab::before,
+.far::before,
+.btn-close::before,
+.form-check-input::before,
+.dropdown-toggle::after,
+.custom-control-label::before,
+.custom-control-label::after,
+.form-check-label::before,
+.form-check-label::after,
+.nav-link::after,
+.page-link::after,
+.badge::before,
+.alert-icon::before,
+input[type="checkbox"]::before,
+input[type="radio"]::before {
+    display: inline-block !important;
+    content: inherit !important;
+}
+
+/* 恢复特定视图中的功能性伪元素 */
+.timeline-date:before,
+.timeline-item:before {
+    display: block !important;
+    content: inherit !important;
 } 

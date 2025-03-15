@@ -427,6 +427,8 @@ h1 {
     z-index: 1000;
     overflow-y: auto;
     animation: fadeIn 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: contain;
 }
 
 @keyframes fadeIn {
@@ -443,6 +445,9 @@ h1 {
     position: relative;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
     animation: slideIn 0.3s ease;
+    z-index: 1001;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 
 @keyframes slideIn {
@@ -647,4 +652,16 @@ textarea {
 .achievement-progress, 
 .achievement-progress-bar {
     display: none;
+}
+
+/* 按钮样式增强 */
+.close-btn, 
+.primary-btn, 
+.secondary-btn, 
+.danger-btn {
+    cursor: pointer !important;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
 }

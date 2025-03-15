@@ -378,8 +378,31 @@ class UIController {
         
         // 点击模态窗口外部关闭
         document.addEventListener('click', (e) => {
-            e.stopPropagation(); // 阻止事件冒泡
+            // 不要无条件阻止冒泡，这可能导致移动设备上的点击问题
+            // e.stopPropagation(); // 注释掉这一行
             
+            if (this.goalModal && this.goalModal.style.display === 'block') {
+                if (e.target === this.goalModal) {
+                    e.preventDefault();
+                    this.hideGoalModal();
+                }
+            }
+            if (this.confirmModal && this.confirmModal.style.display === 'block') {
+                if (e.target === this.confirmModal) {
+                    e.preventDefault();
+                    this.hideConfirmModal();
+                }
+            }
+            if (this.moneyInputModal && this.moneyInputModal.style.display === 'block') {
+                if (e.target === this.moneyInputModal) {
+                    e.preventDefault();
+                    this.hideMoneyModal();
+                }
+            }
+        });
+        
+        // 添加针对触摸设备的事件处理
+        document.addEventListener('touchend', (e) => {
             if (this.goalModal && this.goalModal.style.display === 'block') {
                 if (e.target === this.goalModal) {
                     e.preventDefault();
@@ -685,12 +708,21 @@ class UIController {
 
     // 显示添加目标模态框
     showAddGoalModal() {
-        this.modalTitle.textContent = '添加新目标';
         this.goalIdInput.value = '';
         this.parentGoalIdInput.value = '';
         this.isSubgoalInput.value = 'false';
-        this.goalForm.reset();
-        this.goalModal.classList.add('show');
+        this.goalNameInput.value = '';
+        this.goalAmountInput.value = '';
+        this.currentAmountInput.value = '0';
+        this.goalDeadlineInput.value = '';
+        this.goalNotesInput.value = '';
+        
+        this.modalTitle.textContent = '添加新目标';
+        this.goalModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 防止iOS上的弹性滚动影响
+        this.preventBackgroundScroll();
     }
 
     // 显示编辑目标模态框
@@ -747,8 +779,11 @@ class UIController {
 
     // 隐藏目标模态框
     hideGoalModal() {
-        this.goalModal.classList.remove('show');
-        this.goalForm.reset();
+        this.goalModal.style.display = 'none';
+        document.body.style.overflow = '';
+        
+        // 清除iOS弹性滚动修复
+        this.restoreBackgroundScroll();
     }
 
     // 处理目标表单提交
@@ -793,48 +828,55 @@ class UIController {
         this.updateDashboard();
     }
 
-    // 显示删除目标确认
+    // 显示删除目标确认框
     showDeleteGoalConfirmation(goalId) {
-        const goal = this.goalTracker.getGoal(goalId);
-        if (!goal) return;
+        this.tempGoalId = goalId;
+        this.tempSubgoalId = null;
+        this.confirmMessage.textContent = '确定要删除这个目标吗？所有相关的子目标也将被删除。';
         
-        this.confirmMessage.textContent = `确定要删除"${goal.name}"目标吗？所有相关的子目标也将被删除。`;
-        
-        // 设置确认按钮点击事件
+        // 设置确认按钮事件
         this.confirmYesBtn.onclick = () => {
-            this.goalTracker.deleteGoal(goalId);
-            this.hideConfirmModal();
-            this.renderGoals();
-            this.updateDashboard();
+            const success = this.goalTracker.deleteGoal(this.tempGoalId);
+            if (success) {
+                this.renderGoals();
+                this.updateDashboard();
+                this.hideConfirmModal();
+            }
         };
         
-        this.confirmModal.classList.add('show');
+        this.confirmModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        this.preventBackgroundScroll();
     }
 
-    // 显示删除子目标确认
+    // 显示删除子目标确认框
     showDeleteSubgoalConfirmation(goalId, subgoalId) {
-        const goal = this.goalTracker.getGoal(goalId);
-        if (!goal) return;
+        this.tempGoalId = goalId;
+        this.tempSubgoalId = subgoalId;
+        this.confirmMessage.textContent = '确定要删除这个子目标吗？';
         
-        const subgoal = goal.subgoals.find(sub => sub.id === subgoalId);
-        if (!subgoal) return;
-        
-        this.confirmMessage.textContent = `确定要删除"${subgoal.name}"子目标吗？`;
-        
-        // 设置确认按钮点击事件
+        // 设置确认按钮事件
         this.confirmYesBtn.onclick = () => {
-            this.goalTracker.deleteSubgoal(goalId, subgoalId);
-            this.hideConfirmModal();
-            this.renderGoals();
-            this.updateDashboard();
+            const success = this.goalTracker.deleteSubgoal(this.tempGoalId, this.tempSubgoalId);
+            if (success) {
+                this.renderGoals();
+                this.updateDashboard();
+                this.hideConfirmModal();
+            }
         };
         
-        this.confirmModal.classList.add('show');
+        this.confirmModal.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+        this.preventBackgroundScroll();
     }
 
     // 隐藏确认模态框
     hideConfirmModal() {
-        this.confirmModal.classList.remove('show');
+        this.confirmModal.style.display = 'none';
+        document.body.style.overflow = '';
+        
+        // 清除iOS弹性滚动修复
+        this.restoreBackgroundScroll();
     }
 
     // 切换目标展开/折叠状态
@@ -843,41 +885,39 @@ class UIController {
         this.renderGoals();
     }
 
-    // 显示添加金额到目标的模态框
+    // 显示添加金额模态框
     showAddMoneyModal(goalId) {
-        const goal = this.goalTracker.getGoal(goalId);
-        if (!goal) return;
-        
-        this.moneyModalTitle.textContent = `为"${goal.name}"添加金额`;
-        this.moneyGoalIdInput.value = goal.id;
+        this.moneyGoalIdInput.value = goalId;
         this.moneySubgoalIdInput.value = '';
+        this.moneyModalTitle.textContent = '添加存款';
         this.moneyAmountInput.value = '';
         this.moneyInputModal.style.display = 'block';
-        this.moneyAmountInput.focus();
+        document.body.style.overflow = 'hidden';
+        this.preventBackgroundScroll();
+        
+        setTimeout(() => this.moneyAmountInput.focus(), 100);
     }
     
     // 显示添加金额到子目标的模态框
     showAddSubgoalMoneyModal(goalId, subgoalId) {
-        const goal = this.goalTracker.getGoal(goalId);
-        if (!goal) return;
-        
-        const subgoal = goal.subgoals.find(sub => sub.id === subgoalId);
-        if (!subgoal) return;
-        
-        this.moneyModalTitle.textContent = `为"${subgoal.name}"添加金额`;
-        this.moneyGoalIdInput.value = goal.id;
+        this.moneyGoalIdInput.value = goalId;
         this.moneySubgoalIdInput.value = subgoalId;
+        this.moneyModalTitle.textContent = '添加存款到子目标';
         this.moneyAmountInput.value = '';
         this.moneyInputModal.style.display = 'block';
-        this.moneyAmountInput.focus();
+        document.body.style.overflow = 'hidden';
+        this.preventBackgroundScroll();
+        
+        setTimeout(() => this.moneyAmountInput.focus(), 100);
     }
     
     // 隐藏存钱模态框
     hideMoneyModal() {
         this.moneyInputModal.style.display = 'none';
-        this.moneyGoalIdInput.value = '';
-        this.moneySubgoalIdInput.value = '';
-        this.moneyAmountInput.value = '';
+        document.body.style.overflow = '';
+        
+        // 清除iOS弹性滚动修复
+        this.restoreBackgroundScroll();
     }
     
     // 处理金额保存
@@ -902,6 +942,25 @@ class UIController {
         this.hideMoneyModal();
         this.renderGoals();
         this.updateDashboard();
+    }
+
+    // 防止iOS背景滚动问题的辅助方法
+    preventBackgroundScroll() {
+        // 记录当前滚动位置
+        this.scrollPosition = window.pageYOffset;
+        // 设置固定位置
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
+        document.body.style.top = `-${this.scrollPosition}px`;
+    }
+
+    // 恢复背景滚动
+    restoreBackgroundScroll() {
+        // 恢复滚动
+        document.body.style.position = '';
+        document.body.style.width = '';
+        document.body.style.top = '';
+        window.scrollTo(0, this.scrollPosition);
     }
 }
 

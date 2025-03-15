@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
+  <!-- 背景圆 -->
+  <circle cx="32" cy="32" r="30" fill="#3498db" />
+  
+  <!-- 进度圆环 -->
+  <circle cx="32" cy="32" r="26" fill="none" stroke="white" stroke-width="2.5" stroke-dasharray="163" stroke-dashoffset="40" />
+  
+  <!-- ST图标 -->
+  <text x="32" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle">ST</text>
+  
+  <!-- 顶部小标记 -->
+  <circle cx="32" cy="6" r="2.5" fill="white" />
+</svg> 

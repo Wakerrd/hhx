@@ -329,50 +329,58 @@ class UIController {
         // 添加新目标按钮点击事件
         this.addGoalBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.showAddGoalModal();
         });
         
         // 目标表单提交事件
         this.goalForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.handleGoalFormSubmit();
         });
         
         // 目标模态框关闭按钮点击事件
         this.closeModalBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.hideGoalModal();
         });
         this.cancelBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.hideGoalModal();
         });
         
         // 确认模态框按钮点击事件
         this.confirmNoBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.hideConfirmModal();
         });
         
         // 存钱模态框按钮事件
         this.closeMoneyModalBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.hideMoneyModal();
         });
         this.cancelMoneyBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.hideMoneyModal();
         });
         this.saveMoneyBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation();
+            // 移除阻止冒泡，这可能导致移动设备问题
+            // e.stopPropagation();
             this.handleMoneySave();
         });
         
@@ -422,6 +430,15 @@ class UIController {
                 }
             }
         });
+        
+        // 添加一个通用的触摸事件处理，用于处理iOS上的300ms延迟问题
+        if ('ontouchstart' in window) {
+            document.querySelectorAll('button, .close-btn, .action-btn').forEach(el => {
+                el.addEventListener('touchstart', function() {
+                    // 空函数，仅用于激活元素
+                }, {passive: true});
+            });
+        }
     }
 
     // 渲染所有目标
@@ -740,7 +757,11 @@ class UIController {
         this.goalDeadlineInput.value = goal.deadline || '';
         this.goalNotesInput.value = goal.notes || '';
         
-        this.goalModal.classList.add('show');
+        this.goalModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 防止iOS上的弹性滚动影响
+        this.preventBackgroundScroll();
     }
 
     // 显示添加子目标模态框
@@ -752,8 +773,17 @@ class UIController {
         this.goalIdInput.value = '';
         this.parentGoalIdInput.value = goal.id;
         this.isSubgoalInput.value = 'true';
-        this.goalForm.reset();
-        this.goalModal.classList.add('show');
+        this.goalNameInput.value = '';
+        this.goalAmountInput.value = '';
+        this.currentAmountInput.value = '0';
+        this.goalDeadlineInput.value = '';
+        this.goalNotesInput.value = '';
+        
+        this.goalModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 防止iOS上的弹性滚动影响
+        this.preventBackgroundScroll();
     }
 
     // 显示编辑子目标模态框
@@ -774,13 +804,33 @@ class UIController {
         this.goalDeadlineInput.value = subgoal.deadline || '';
         this.goalNotesInput.value = subgoal.notes || '';
         
-        this.goalModal.classList.add('show');
+        this.goalModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // 防止背景滚动
+        
+        // 防止iOS上的弹性滚动影响
+        this.preventBackgroundScroll();
     }
 
     // 隐藏目标模态框
     hideGoalModal() {
+        if (!this.goalModal) return;
+        
+        // 确保使用与显示时相同的属性
         this.goalModal.style.display = 'none';
         document.body.style.overflow = '';
+        
+        // 清除表单值，防止再次打开时显示旧数据
+        setTimeout(() => {
+            // 使用setTimeout确保模态框完全关闭后再清除数据
+            this.goalIdInput.value = '';
+            this.parentGoalIdInput.value = '';
+            this.isSubgoalInput.value = 'false';
+            this.goalNameInput.value = '';
+            this.goalAmountInput.value = '';
+            this.currentAmountInput.value = '0';
+            this.goalDeadlineInput.value = '';
+            this.goalNotesInput.value = '';
+        }, 100);
         
         // 清除iOS弹性滚动修复
         this.restoreBackgroundScroll();
@@ -872,8 +922,21 @@ class UIController {
 
     // 隐藏确认模态框
     hideConfirmModal() {
+        if (!this.confirmModal) return;
+        
         this.confirmModal.style.display = 'none';
         document.body.style.overflow = '';
+        
+        // 清除临时存储的ID
+        setTimeout(() => {
+            this.tempGoalId = null;
+            this.tempSubgoalId = null;
+            
+            // 移除确认按钮的事件处理器，防止重复触发
+            if (this.confirmYesBtn) {
+                this.confirmYesBtn.onclick = null;
+            }
+        }, 100);
         
         // 清除iOS弹性滚动修复
         this.restoreBackgroundScroll();
@@ -913,8 +976,17 @@ class UIController {
     
     // 隐藏存钱模态框
     hideMoneyModal() {
+        if (!this.moneyInputModal) return;
+        
         this.moneyInputModal.style.display = 'none';
         document.body.style.overflow = '';
+        
+        // 清除输入值
+        setTimeout(() => {
+            this.moneyGoalIdInput.value = '';
+            this.moneySubgoalIdInput.value = '';
+            this.moneyAmountInput.value = '';
+        }, 100);
         
         // 清除iOS弹性滚动修复
         this.restoreBackgroundScroll();
@@ -946,21 +1018,42 @@ class UIController {
 
     // 防止iOS背景滚动问题的辅助方法
     preventBackgroundScroll() {
-        // 记录当前滚动位置
+        // 保存当前滚动位置
         this.scrollPosition = window.pageYOffset;
+        
         // 设置固定位置
+        document.body.style.overflow = 'hidden';
         document.body.style.position = 'fixed';
-        document.body.style.width = '100%';
         document.body.style.top = `-${this.scrollPosition}px`;
+        document.body.style.width = '100%';
+        
+        // 为所有可滚动元素添加 overscroll-behavior: contain
+        const scrollElements = document.querySelectorAll('.modal-content, textarea, input');
+        scrollElements.forEach(el => {
+            if (el.style) {
+                el.dataset.originalOverscroll = el.style.overscrollBehavior || '';
+                el.style.overscrollBehavior = 'contain';
+            }
+        });
     }
 
     // 恢复背景滚动
     restoreBackgroundScroll() {
         // 恢复滚动
+        document.body.style.overflow = '';
         document.body.style.position = '';
-        document.body.style.width = '';
         document.body.style.top = '';
-        window.scrollTo(0, this.scrollPosition);
+        document.body.style.width = '';
+        window.scrollTo(0, this.scrollPosition || 0);
+        
+        // 恢复所有可滚动元素的原始行为
+        const scrollElements = document.querySelectorAll('.modal-content, textarea, input');
+        scrollElements.forEach(el => {
+            if (el.style && el.dataset.originalOverscroll !== undefined) {
+                el.style.overscrollBehavior = el.dataset.originalOverscroll;
+                delete el.dataset.originalOverscroll;
+            }
+        });
     }
 }
 
@@ -971,12 +1064,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // 增强移动设备兼容性
     if ('ontouchstart' in window) {
         // 添加触摸点击事件处理
-        document.addEventListener('touchstart', function(e) {
-            // 确保触摸事件能正常工作，特别是在iOS Safari中
-            if (e.target.tagName === 'BUTTON' || 
-                e.target.closest('button') || 
-                e.target.classList.contains('close-btn') ||
-                e.target.parentElement.classList.contains('icon-btn')) {
+        document.addEventListener('touchstart', function() {
+            // 确保iOS上的点击事件正常激活，不需要实际功能
+        }, {passive: true});
+        
+        // 阻止iOS上的双击缩放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            if (now - lastTouchEnd < 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, {passive: false});
+        
+        // 禁用长按展示上下文菜单，这可能干扰按钮点击
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.closest('button')) {
                 e.preventDefault();
             }
         }, {passive: false});

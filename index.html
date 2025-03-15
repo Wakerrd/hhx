@@ -72,9 +72,16 @@
                                 <div id="currentDate"></div>
                                 <div id="currentTime"></div>
                             </div>
-                            <button id="money-goal-btn" class="btn btn-primary mt-3" onclick="window.location.href='money-goal-tracker.html'">
+                            <button class="btn btn-primary mt-3" onclick="window.location.href='money-goal-tracker.html'">
                                 <i class="fas fa-chart-line"></i> 赚钱目标进度
                             </button>
+                            <div class="mt-2">
+                                <button id="currencyToggleBtn" class="btn btn-outline-primary btn-sm" 
+                                    onclick="promptExchangeRate()" 
+                                    title="点击切换货币，按住Ctrl点击设置汇率">
+                                    切换到 $
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

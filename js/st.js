@@ -282,6 +282,27 @@
                 }
             }
 
+            // 加载保存的货币设置
+            const savedCurrency = localStorage.getItem('st_currency');
+            if (savedCurrency) {
+                currentCurrency = savedCurrency;
+            }
+
+            // 加载保存的汇率设置
+            const savedExchangeRate = localStorage.getItem('st_exchange_rate');
+            if (savedExchangeRate) {
+                const parsedRate = parseFloat(savedExchangeRate);
+                if (!isNaN(parsedRate) && parsedRate > 0) {
+                    exchangeRate = parsedRate;
+                }
+            }
+
+            // 初始化货币切换按钮文本
+            const currencyToggleBtn = document.getElementById('currencyToggleBtn');
+            if (currencyToggleBtn) {
+                currencyToggleBtn.innerHTML = currentCurrency === 'CNY' ? '切换到 $' : '切换到 ¥';
+            }
+
             // 初始化视图模式
             const viewModes = {
                 'savingsMode': 'savings',
@@ -330,42 +351,6 @@
             const habitMode = document.getElementById('habitMode');
             const timeTrackingMode = document.getElementById('timeTrackingMode');
             const personalDataMode = document.getElementById('personalDataMode');
-            
-            // 添加移动设备触摸事件支持
-            if ('ontouchstart' in window) {
-                // 特定按钮的处理
-                const moneyGoalBtn = document.getElementById('money-goal-btn');
-                if (moneyGoalBtn) {
-                    moneyGoalBtn.addEventListener('touchstart', function(e) {
-                        e.preventDefault();
-                        window.location.href = 'money-goal-tracker.html';
-                    });
-                }
-                
-                // 全局触摸事件处理
-                document.addEventListener('touchstart', function(e) {
-                    // 处理所有按钮类元素
-                    if (e.target.tagName === 'BUTTON' || 
-                        e.target.closest('button') || 
-                        e.target.classList.contains('btn') || 
-                        e.target.closest('.btn')) {
-                        // 不阻止所有触摸事件，仅增强按钮响应
-                        // 获取原始onclick属性
-                        const clickHandler = e.target.getAttribute('onclick') || 
-                                           (e.target.closest('button') && e.target.closest('button').getAttribute('onclick')) ||
-                                           (e.target.closest('.btn') && e.target.closest('.btn').getAttribute('onclick'));
-                        
-                        // 如果有onclick属性且包含location.href，则手动处理
-                        if (clickHandler && clickHandler.includes('location.href')) {
-                            const url = clickHandler.match(/['"]([^'"]*)['"]/)[1];
-                            if (url) {
-                                e.preventDefault();
-                                window.location.href = url;
-                            }
-                        }
-                    }
-                }, {passive: false});
-            }
             
             if (savingsMode && ageMode && historyMode && archiveMode && todoMode && inspirationMode && habitMode && timeTrackingMode && personalDataMode) {
                 savingsMode.addEventListener('change', () => {
@@ -687,7 +672,7 @@
                                     <span class="days-label">天后截止</span>
                                 </div>
                                 <div class="time-value ${timeStatus}">
-                                    已过${Math.round(progress)}%时间
+                                    已过${progress.toFixed(1)}%时间
                                 </div>
                             </div>
                             <div class="progress-section">
@@ -828,18 +813,99 @@
             });
         });
 
-        // 添加 formatMoney 函数
+        // 货币切换功能
+        let currentCurrency = 'CNY'; // 默认使用人民币
+        let exchangeRate = 7.1; // 美元兑人民币汇率，默认值
+
+        // 提示用户设置汇率并切换货币
+        function promptExchangeRate() {
+            // 定义设置汇率的函数
+            const setExchangeRate = () => {
+                const newRate = prompt(`请输入人民币兑美元汇率 (当前: 1美元 = ${exchangeRate}人民币):`, exchangeRate);
+                if (newRate !== null) {
+                    const parsedRate = parseFloat(newRate);
+                    if (!isNaN(parsedRate) && parsedRate > 0) {
+                        exchangeRate = parsedRate;
+                        localStorage.setItem('st_exchange_rate', exchangeRate);
+                        // 如果当前是美元，刷新显示
+                        if (currentCurrency === 'USD') {
+                            toggleCurrency();
+                            toggleCurrency();
+                        }
+                        return true;
+                    } else {
+                        alert('请输入有效的汇率数值');
+                        return false;
+                    }
+                }
+                return false;
+            };
+
+            // 如果是从右键菜单调用设置汇率
+            if (event && event.ctrlKey) {
+                setExchangeRate();
+                return;
+            }
+
+            // 否则直接切换货币，不显示设置对话框
+            toggleCurrency();
+        }
+
+        function toggleCurrency() {
+            currentCurrency = currentCurrency === 'CNY' ? 'USD' : 'CNY';
+            
+            // 更新界面显示
+            if (document.getElementById('savingsMode') && document.getElementById('savingsMode').checked) {
+                const container = document.getElementById('goalsContainer');
+                container.innerHTML = '';
+                displaySavingsGoals(container);
+            }
+            
+            // 更新存款总额显示
+            const totalSavedElement = document.getElementById('totalSaved');
+            if (totalSavedElement) {
+                totalSavedElement.textContent = formatMoney(appData.totalSaved);
+            }
+            
+            // 更新切换按钮文本
+            const currencyToggleBtn = document.getElementById('currencyToggleBtn');
+            if (currencyToggleBtn) {
+                currencyToggleBtn.innerHTML = currentCurrency === 'CNY' ? '切换到 $' : '切换到 ¥';
+            }
+            
+            // 保存货币设置到localStorage
+            localStorage.setItem('st_currency', currentCurrency);
+        }
+
+        // 修改 formatMoney 函数支持不同货币
         function formatMoney(amount) {
             const value = Math.round(Number(amount));
             if (isNaN(value)) {
-                return '¥0';
+                return currentCurrency === 'CNY' ? '¥0' : '$0';
             }
-            return new Intl.NumberFormat('zh-CN', {
-                style: 'currency',
-                currency: 'CNY',
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0
-            }).format(value);
+            
+            if (currentCurrency === 'CNY') {
+                return new Intl.NumberFormat('zh-CN', {
+                    style: 'currency',
+                    currency: 'CNY',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(value);
+            } else {
+                // 转换为美元
+                const usdValue = value / exchangeRate;
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(usdValue);
+            }
+        }
+
+        // 格式化日期，只显示日期不显示时间
+        function formatDateOnly(date) {
+            return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
         }
 
         // 修改出生日期设置处理
@@ -1097,12 +1163,12 @@
             // 创建左侧统计区域
             const leftDiv = document.createElement('div');
             leftDiv.className = 'flex-shrink-0';
-            leftDiv.style.width = '300px';
+            leftDiv.style.width = '200px';
             leftDiv.innerHTML = `
                 <div class="text-center mb-3">
                     <div class="btn-group">
-                        <button class="btn btn-primary btn-sm" onclick="showStatistics('week', true)">本周统计</button>
-                        <button class="btn btn-primary btn-sm" onclick="showStatistics('month', true)">本月统计</button>
+                        <button class="btn btn-primary btn-sm stats-btn" onclick="showStatistics('week', true)">本周</button>
+                        <button class="btn btn-primary btn-sm stats-btn" onclick="showStatistics('month', true)">本月</button>
                     </div>
                 </div>
                 <div id="statisticsContainer"></div>
@@ -1135,14 +1201,14 @@
                                 <div style="min-width: 30px;">
                                     <span class="${operationClass} fw-bold">${operationText}</span>
                                 </div>
-                                <div style="min-width: 100px;">
+                                <div style="min-width: 80px;" class="d-flex flex-column">
                                     <span class="fw-bold ${operationClass}">${formatMoney(record.amount)}</span>
+                                    ${record.note ? `<small class="text-muted note-text">${record.note}</small>` : ''}
                                 </div>
                                 <div class="flex-grow-1">
-                                    ${record.note ? `<span class="text-muted">${record.note}</span>` : ''}
                                 </div>
-                                <div style="min-width: 150px;">
-                                    <small class="text-muted">${recordDate.toLocaleString('zh-CN')}</small>
+                                <div style="min-width: 100px;">
+                                    <small class="text-muted">${formatDateOnly(recordDate)}</small>
                                 </div>
                                 <div>
                                     <button class="btn btn-danger btn-sm py-0 px-2" 
@@ -1268,6 +1334,30 @@
         const statisticsStyle = `
         .statistics-container {
             padding: 1rem;
+        }
+
+        .stats-btn {
+            padding: 0.25rem 0.5rem;
+            min-width: 50px;
+            font-size: 0.85rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-group .stats-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .note-text {
+            font-size: 0.75rem;
+            margin-top: 3px;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #666;
+            display: block;
         }
 
         .stat-card {
@@ -2436,6 +2526,8 @@
 
         // 1. 添加显示存款目标的独立函数
         function displaySavingsGoals(container) {
+            // 删除货币切换按钮代码，只在主页面保留按钮
+            
             appData.goals.forEach((goal, index) => {
                 const totalMoney = SafeMoney.fromYuan(appData.totalSaved);
                 const targetMoney = SafeMoney.fromYuan(goal.target);
@@ -2482,7 +2574,7 @@
                                      aria-valuenow="${progress}"
                                      aria-valuemin="0"
                                      aria-valuemax="100">
-                                    ${progress.toFixed(1)}%
+                                    ${Math.round(progress)}%
                                 </div>
                             </div>
                             <div class="remaining-amount">
@@ -3537,4 +3629,9 @@
                 renderViewMode('personalData');
             }
         };
+
+        // 添加日期格式化函数，只显示日期不显示时间
+        function formatDateOnly(date) {
+            return `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`;
+        }
 

@@ -3,23 +3,23 @@
 /* Quadrant grid layout */
 .quadrant-grid {
     display: grid;
-    grid-template-columns: minmax(350px, 1fr) minmax(350px, 1fr);
-    grid-template-rows: repeat(2, minmax(300px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
-    min-height: 800px;
+    grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+    grid-template-rows: repeat(2, minmax(250px, 1fr));
+    gap: 0.3rem;
+    padding: 0.25rem;
+    min-height: 600px;
     height: auto;
-    max-width: 1600px;
     margin: 0 auto;
+    width: 100%;
 }
 
 /* Quadrant styling */
 .quadrant {
     border: 2px solid;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px;
-    min-height: 200px;
+    border-radius: 8px;
+    padding: 10px;
+    margin: 2px;
+    min-height: 180px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -77,34 +77,34 @@
 .quadrant-1 .quadrant-title {
     color: #e74c3c;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .quadrant-2 .quadrant-title {
     color: #3498db;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .quadrant-3 .quadrant-title {
     color: #2ecc71;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .quadrant-4 .quadrant-title {
     color: #f1c40f;
     font-weight: bold;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 /* Todo list */
 .todo-list {
     flex: 1;
     overflow-y: auto;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
     min-height: 50px;
-    padding: 8px;
+    padding: 5px 8px;
 }
 
 /* Todo items */
@@ -112,7 +112,7 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem;
+    padding: 0.4rem 0.5rem;
     border-bottom: 1px solid #f0f2f5;
     cursor: move;
     transition: all 0.2s ease;
@@ -178,14 +178,15 @@
     font-size: 0.9rem;
 }
 
+/* Add todo container */
 .add-todo-container {
     position: absolute;
-    bottom: 15px;
-    left: 15px;
-    right: 15px;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
     display: flex;
-    gap: 10px;
-    width: calc(100% - 30px);
+    gap: 6px;
+    width: calc(100% - 20px);
 }
 
 .add-todo-input {
@@ -212,7 +213,8 @@
 .view-container {
     display: none;
     width: 100%;
-    margin-top: 1rem;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 .view-container.active {
